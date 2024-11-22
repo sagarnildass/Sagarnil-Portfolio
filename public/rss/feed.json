@@ -1,0 +1,35 @@
+{
+    "version": "https://jsonfeed.org/version/1",
+    "title": "Your Name",
+    "home_page_url": "https://devpro.aceternity.com",
+    "feed_url": "https://devpro.aceternity.com/rss/feed.json",
+    "description": "Your blog desc",
+    "icon": "https://devpro.aceternity.com/favicon.ico",
+    "author": {
+        "name": "Your Name"
+    },
+    "items": [
+        {
+            "id": "https://devpro.aceternity.com/articles/what-is-a-website-template",
+            "content_html": "hi",
+            "url": "https://devpro.aceternity.com/articles/what-is-a-website-template",
+            "title": "What is a website template",
+            "summary": "A website template is a pre-designed website that can be customized to suit your needs. In this post, we’ll take a look at what a website template is and why it can be a great creative outlet for writers",
+            "date_modified": "2022-11-28T00:00:00.000Z",
+            "author": {
+                "name": "Your Name"
+            }
+        },
+        {
+            "id": "https://devpro.aceternity.com/articles/what-is-a-blog-anyway",
+            "content_html": "hi",
+            "url": "https://devpro.aceternity.com/articles/what-is-a-blog-anyway",
+            "title": "What is a blog anyway",
+            "summary": "A blog is a website that is updated regularly with new content. It is a great way to share your thoughts and ideas with the world. In this blog post, we will discuss what a blog is and how to create one.",
+            "date_modified": "2022-09-02T00:00:00.000Z",
+            "author": {
+                "name": "Your Name"
+            }
+        }
+    ]
+}

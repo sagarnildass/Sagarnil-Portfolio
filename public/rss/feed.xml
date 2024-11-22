@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Your Name</title>
+        <link>https://devpro.aceternity.com</link>
+        <description>Your blog desc</description>
+        <lastBuildDate>Mon, 20 Mar 2023 10:49:40 GMT</lastBuildDate>
+        <docs>https://validator.w3.org/feed/docs/rss2.html</docs>
+        <generator>https://github.com/jpmonette/feed</generator>
+        <image>
+            <title>Your Name</title>
+            <url>https://devpro.aceternity.com/favicon.ico</url>
+            <link>https://devpro.aceternity.com</link>
+        </image>
+        <copyright>All rights reserved 2023</copyright>
+        <item>
+            <title><![CDATA[What is a website template]]></title>
+            <link>https://devpro.aceternity.com/articles/what-is-a-website-template</link>
+            <guid>https://devpro.aceternity.com/articles/what-is-a-website-template</guid>
+            <pubDate>Mon, 28 Nov 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[A website template is a pre-designed website that can be customized to suit your needs. In this post, we’ll take a look at what a website template is and why it can be a great creative outlet for writers]]></description>
+            <content:encoded><![CDATA[hi]]></content:encoded>
+            <author>yourname@youremail.com (Your Name)</author>
+        </item>
+        <item>
+            <title><![CDATA[What is a blog anyway]]></title>
+            <link>https://devpro.aceternity.com/articles/what-is-a-blog-anyway</link>
+            <guid>https://devpro.aceternity.com/articles/what-is-a-blog-anyway</guid>
+            <pubDate>Fri, 02 Sep 2022 00:00:00 GMT</pubDate>
+            <description><![CDATA[A blog is a website that is updated regularly with new content. It is a great way to share your thoughts and ideas with the world. In this blog post, we will discuss what a blog is and how to create one.]]></description>
+            <content:encoded><![CDATA[hi]]></content:encoded>
+            <author>yourname@youremail.com (Your Name)</author>
+        </item>
+    </channel>
+</rss>
