@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Contact } from "./Contact";
 import { Footer } from "./Footer";
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import Navbar from "./Navbar/Navbar";
 
@@ -61,6 +62,7 @@ export const Container = (props: any) => {
         </div> */}
         <Navbar />
         {children}
+        <GoogleAnalytics gaId="G-1PE0MQWYHL" />
         <Footer />
         <Contact />
       </main>
