@@ -50,7 +50,6 @@ export const Contact = () => {
 
   const handleSubmit = async () => {
     let { email, message } = formState;
-    console.log("email", email, "message", message);
     let updatedState = { ...formState };
     let regex =
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -70,9 +69,49 @@ export const Contact = () => {
       setFormState({ ...updatedState });
       return;
     }
-    // Everything is fine - Proceed with the API call.
 
-    // Your API Call goes here
+    // Everything is fine - Proceed with the API call.
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email.value, message: message.value }),
+      });
+
+      console.log("Response status:", response.status);
+
+      // Check if response is OK (status in the range 200-299)
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Response Error Text:", errorText);
+        throw new Error(`Network response was not ok: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess("Your message has been sent successfully!");
+        setFormState({
+          email: { value: "", error: "" },
+          message: { value: "", error: "" },
+        });
+      } else {
+        setError(
+          data.message || "Something went wrong. Please try again later."
+        );
+      }
+    } catch (err) {
+      console.error("An unexpected error occurred:", err);
+      setError("An unexpected error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleButtonClick = () => {
@@ -141,7 +180,10 @@ export const Contact = () => {
               </small>
               <button
                 onClick={handleSubmit}
-                className="text-zinc-100  w-full px-4 py-2 md:py-4 border-2 border-zinc-800 bg-zinc-700 rounded-md font-normal text-sm  mb-4 transition duration-200 hover:shadow-none"
+                // disabled={loading}
+                className={`text-zinc-100  w-full px-4 py-2 md:py-4 border-2 border-zinc-800 bg-zinc-700 rounded-md font-normal text-sm  mb-4 transition duration-200 hover:shadow-none ${
+                  loading ? "opacity-50 cursor-not-allowed" : ""
+                }`}
               >
                 {loading ? "Submitting..." : "Submit"}
               </button>

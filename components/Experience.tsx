@@ -64,7 +64,7 @@ export const Experience = () => {
                     src={exp.logo}
                     width={12}
                     height={12}
-                    alt={exp.company}
+                    alt="company logo"
                     className="flex-shrink-0 transition duration-200"
                   />
                 </div>

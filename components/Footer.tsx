@@ -63,6 +63,7 @@ export const Footer = () => {
               href={socialLink.link}
               className="text-zinc-500 text-sm relative"
               target="__blank"
+              aria-label={socialLink.name}
             >
               <span className="relative z-10 px-2 py-2 inline-block">
                 {socialLink.icon}
