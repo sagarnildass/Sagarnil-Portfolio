@@ -1,0 +1,13 @@
+# *
+User-agent: *
+Allow: /
+
+# *
+User-agent: *
+Disallow: /api/*
+
+# Host
+Host: https://sagarnildas.com/
+
+# Sitemaps
+Sitemap: https://sagarnildas.com/sitemap.xml
