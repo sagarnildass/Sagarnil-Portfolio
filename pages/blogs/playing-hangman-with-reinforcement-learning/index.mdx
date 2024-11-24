@@ -1159,6 +1159,125 @@ class HangmanEnv(gym.Env):
 
 -   **Letter Probability Calculation (`_compute_letter_probabilities`):** Dynamically calculates the probability of each letter being in the target word based on the current state, aiding the agent in making informed guesses.
 
+#### **4.3.4. Reward Shaping in HangmanEnv**
+
+**Reward shaping** is a pivotal aspect of reinforcement learning that involves designing the reward signals to encourage desired behaviors and discourage undesired ones. In the context of the `HangmanEnv` class, reward shaping plays a crucial role in guiding the AI agent to make intelligent guesses, learn efficiently, and achieve the game's objectives. Here's an in-depth look at how reward shaping is implemented in this environment:
+
+##### **a. Overview of Reward Structure**
+
+The reward structure in `HangmanEnv` is meticulously crafted to:
+
+1.  **Encourage Correct Guesses:** Reward the agent for correctly identifying letters in the target word.
+2.  **Discourage Repeated or Invalid Guesses:** Penalize the agent for guessing letters it has already tried or for invalid actions.
+3.  **Promote Efficient Learning:** Provide bonuses for solving the word quickly and penalties for taking too many attempts.
+4.  **Balance Exploration and Exploitation:** Use heuristic-based rewards and penalties to guide the agent's learning process.
+
+##### **b. Detailed Reward Shaping Mechanisms**
+
+1.  **Invalid Actions:**
+
+    -   **Scenario:** The agent selects a letter it has already guessed.
+    -   **Reward:** A significant penalty of `-10`.
+    -   **Purpose:** Discourages the agent from repeating guesses, which do not contribute to solving the game and waste attempts.
+    -   **Implementation:**
+
+```python
+if self.guessed_letters[action] == 1.0:
+    # Invalid action selected
+    reward -= 10  # Significant penalty for invalid action
+    self.remaining_attempts -= 1  # Decrease remaining attempts
+    ...
+```
+
+2.  **Incorrect Guesses:**
+
+-   **Scenario:** The agent guesses a letter not present in the target word.
+-   **Reward:** A penalty of `-2` plus an additional heuristic-based penalty proportional to the inverse probability of the guessed letter.
+-   **Purpose:** Discourages the agent from making incorrect guesses, thereby conserving attempts.
+-   **Implementation:**
+
+```python
+else:
+    # Incorrect guess
+    self.remaining_attempts -= 1
+    reward -= 2  # Increased penalty
+    reward -= 5 * (1 - letter_prob)  # Heuristic-based penalty
+    ...
+```
+
+3.  **Correct Guesses:**
+
+-   **Scenario:** The agent correctly identifies one or more letters in the target word.
+-   **Reward:**
+    -   `5` points for each new letter revealed.
+    -   An additional `10` points multiplied by the probability of the guessed letter (`letter_prob`).
+-   **Purpose:** Rewards the agent for making correct guesses and leverages the letter probability to encourage strategic guessing.
+-   **Implementation:**
+
+```python
+if letter in self.current_word:
+    # Correct guess
+    ...
+    reward += 5 * new_letters_revealed
+    reward += 10 * letter_prob  # Heuristic-based reward
+    ...
+```
+
+4.  **Winning the Game:**
+
+-   **Scenario:** The agent successfully reveals all unique letters in the target word before exhausting all attempts.
+-   **Reward:**
+    -   A substantial bonus of `50` points.
+    -   An efficiency bonus proportional to the remaining attempts (`10 * (self.remaining_attempts / self.max_attempts)`).
+-   **Purpose:** Strongly incentivizes the agent to solve the game efficiently, balancing speed and resource conservation.
+-   **Implementation:**
+
+```python
+if self.unique_letters_remaining == 0:
+    # Efficiency bonus: reward proportional to remaining attempts
+    efficiency_bonus = 10 * (self.remaining_attempts / self.max_attempts)
+    reward += 50 + efficiency_bonus  # Increased reward for winning
+    done = True
+```
+
+5.  **Losing the Game:**
+
+-   **Scenario:** The agent fails to reveal all letters within the allowed number of attempts.
+-   **Reward:** An additional penalty of `-20`.
+-   **Purpose:** Discourages the agent from failing to solve the game and reinforces the importance of making correct guesses.
+-   **Implementation:**
+
+```python
+if self.remaining_attempts <= 0:
+    reward -= 20  # Increased penalty for losing
+    done = True
+```
+
+##### **c. Rationale Behind Reward Shaping Choices**
+
+-   **Balance Between Positive and Negative Rewards:** The environment provides a mix of rewards and penalties to create a balanced learning signal. Positive rewards for correct actions encourage the agent to repeat beneficial behaviors, while penalties for incorrect or invalid actions prevent the agent from adopting suboptimal strategies.
+
+-   **Heuristic-Based Adjustments:** Incorporating heuristic factors, such as letter probabilities, allows the agent to prioritize more likely beneficial actions. This guides the agent towards smarter guessing strategies rather than random or repetitive actions.
+
+-   **Encouraging Efficiency:** By rewarding the agent more for solving the game with remaining attempts, we promote not just success but also efficiency. This aligns with real-world applications where resource optimization is crucial.
+
+-   **Preventing Stagnation:** Significant penalties for invalid actions ensure that the agent doesn't get stuck in loops of repeating the same guesses, which could hinder the learning process.
+
+##### **d. Impact on Learning and Performance**
+
+The meticulously designed reward shaping in `HangmanEnv` significantly influences the agent's learning trajectory:
+
+1.  **Accelerated Learning:** Clear and immediate rewards for correct actions help the agent quickly identify and reinforce successful strategies.
+
+2.  **Strategic Decision-Making:** Heuristic-based rewards encourage the agent to consider the probability of each action, leading to more informed and strategic guesses.
+
+3.  **Avoidance of Pitfalls:** Penalties for invalid or incorrect actions deter the agent from engaging in unproductive behaviors, ensuring that its learning process remains focused and efficient.
+
+4.  **Enhanced Performance Metrics:** With such a reward structure, the agent is more likely to achieve higher win rates and greater efficiency, as reflected in metrics like average steps per game.
+
+
+By explicitly incorporating reward shaping into the `HangmanEnv` class, we've crafted an environment that not only challenges the AI agent but also guides it towards intelligent and efficient learning. This strategic approach to reward design is fundamental in developing robust reinforcement learning models capable of mastering complex tasks.
+
 By meticulously managing the game state and providing a comprehensive observation vector, the `HangmanEnv` class ensures that the reinforcement learning agent has all the necessary information to learn and adapt its guessing strategies effectively.
 
 With the Hangman environment meticulously designed and integrated with Curriculum Learning, we're now equipped to proceed to the next phase: integrating the reinforcement learning model. In the upcoming section, we'll explore how to configure and train the Recurrent PPO model to master the game of Hangman.
