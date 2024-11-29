@@ -42,6 +42,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0",
+    "react-mathjax2": "^0.0.2",
     "remark-gfm": "^3.0.1",
     "sharp": "^0.33.5",
     "tailwind-merge": "^1.10.0",
@@ -49,6 +50,7 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
-    "@types/mailgun-js": "^0.22.18"
+    "@types/mailgun-js": "^0.22.18",
+    "@types/react-mathjax": "^1.0.4"
   }
 }
