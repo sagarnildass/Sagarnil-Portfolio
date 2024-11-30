@@ -1,6 +1,4 @@
 import { navItems } from "@/constants/navItems";
-import Link from "next/link";
-
 import React from "react";
 
 import { DesktopNav } from "./DesktopNav";

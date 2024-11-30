@@ -23,7 +23,7 @@ export const Timeline = () => {
                 className="flex flex-row space-x-2 items-start my-2"
               >
                 <HiOutlineCheckCircle className="text-cyan-500 mt-[3px] flex-shrink-0" />
-                <span className="text-zinc-400 text-sm md:text-base">
+                <span className="text-zinc-300 text-sm md:text-base">
                   {point}
                 </span>
               </div>

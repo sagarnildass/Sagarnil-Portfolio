@@ -42,14 +42,14 @@ export default function ProjectsPage() {
             <span className="text-cyan-500"> Sagarnil Das</span> and I'm a
             Gradient Guru with Experience Replay.
           </h1>
-          <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
+          <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
             I've always been a curious soul with a knack for creativity. Back in
             school, I was on the cricket field chasing dreams (and cricket
             balls). Fast forward to college, I discovered my love for
             music—singing my heart out and strumming away on my guitar became my
             creative escape. I became a ape-shit crazy fan of Dream Theater.
           </p>
-          <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
+          <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
             It wasn’t until 2013 that I stumbled into the world of coding, and
             let’s just say, it was love at first debug. Now, I’m a machine
             learning mad-hatter blending logic and creativity to solve complex
@@ -83,12 +83,12 @@ export default function ProjectsPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-8 mt-10 relative">
-        <p className="text-zinc-400 text-sm md:text-base mt-8 leading-loose tracking-wide">
+        <p className="text-zinc-300 text-sm md:text-base mt-8 leading-loose tracking-wide">
           When I’m not wrangling data or building AI models, you’ll find me
           jamming on my guitar or reminiscing about my cricket days. Who says
           you can’t mix algorithms with melodies?
         </p>
-        <p className="text-zinc-400 text-sm md:text-base mt-8 md:leading-loose tracking-wide">
+        <p className="text-zinc-300 text-sm md:text-base mt-8 md:leading-loose tracking-wide">
           Here's a timeline of what I've been upto
         </p>
         <Timeline />

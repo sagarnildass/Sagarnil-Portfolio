@@ -8,24 +8,24 @@ export const Hero = () => {
         I'm a tech-savvy dreamer on a mission to make AI less about{" "}
         <span className="text-cyan-500">robots taking over the world.</span>
       </h1>
-      <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
-        Meet Sagarnil Das, the AI maestro who’s spent over 12 years making
+      <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
+        Meet Sagarnil Das, the AI guy who’s spent over 12 years making
         machines smarter and lives better. Whether he's crafting scalable AI
         ecosystems, partnering with global giants like the NHS, or casually
         building a mental health app that detects emotions and suicidal
         tendencies (because why not?), Sagarnil is all about blending Machine Learning and Deep Learning with
         humanity.
       </p>
-      <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
+      <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
         His journey? A mix of late-night coding, big-picture thinking, and an
         unrelenting drive to create Machine Learning and Deep Learning solutions that actually matter.
       </p>
-      <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
+      <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 leading-loose tracking-wide">
         When he's not strategizing technological breakthroughs at work, he delves
         into cutting-edge AI research, orchestrate cloud infrastructures, and
         explore the intersections of quantum mechanics and general relativity.
       </p>
-      <div className="mt-8 text-zinc-400 text-sm md:text-base max-w-2xl leading-loose tracking-wide">
+      <div className="mt-8 text-zinc-200 text-sm md:text-base max-w-2xl leading-loose tracking-wide">
         Building{" "}
         <LinkPreview
           className={

@@ -12,7 +12,7 @@ export default function EventsPge() {
           I sometimes try to test my skills in
           <span className="text-cyan-500"> Music and Film Making</span>
         </h1>
-        <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
+        <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
           Apart from my film-making passion, I am a self-taught guitarist and
           singer. I have been playing guitar for more than 10 years now. I have
           also been singing since childhood (albeit self-taught). I have performed in various

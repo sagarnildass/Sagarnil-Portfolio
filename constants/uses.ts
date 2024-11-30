@@ -1,6 +1,6 @@
 export const uses = [
   {
-    name: "NVIDIA RTX 4090",
+    name: "NVIDIA RTX 4090 (24 GB)",
     description: `I use it for heavy duty Deep Learning and Machine Learning. It's a beast of a GPU.`,
   },
   {

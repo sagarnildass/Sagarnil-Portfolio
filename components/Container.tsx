@@ -17,7 +17,7 @@ export const Container = (props: any) => {
     title,
     description: `Sagarnil Das is a Machine Learning and Deep Learning Engineer with more than 12 years of experience in the field of AI.`,
     type: "website",
-    image: "https://devpro.aceternity.com/banner.png",
+    image: "/images/avatar.jpeg",
     ...customMeta,
   };
 

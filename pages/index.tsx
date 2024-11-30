@@ -9,6 +9,8 @@ import { generateRssFeed } from "@/lib/generateRSSFeed";
 import { getAllBlogs } from "@/lib/getAllBlogs";
 import AllBlogs from "@/components/AllBlogs";
 import { Uses } from "@/components/Uses";
+import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
+import { testimonials } from "@/constants/testimonials";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -29,6 +31,10 @@ export default function Home({
     <Container>
       <Hero />
       <Experience />
+      <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
+        Here are some kind words from some exceptional people.
+      </h1>
+      <AnimatedTestimonials testimonials={testimonials} autoplay />
       <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
         I've been building a lot of things
       </h1>

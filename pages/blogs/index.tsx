@@ -19,10 +19,14 @@ export default function BlogsPage({ blogs }: any) {
             <span className="text-cyan-500"> Technical Knowledge</span> in one
             place
           </h1>
-          <p className="text-zinc-400 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
-            I'm obsessed with writing bad code. I'm also obsessed with writing.
-            Here, I write about my experiences with code and the things I've
-            learned along the way.
+          <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
+          I personally don’t believe in SEO tricks or the art of stuffing long-tail keywords into every corner of a page. I don’t believe in shortcuts or gaming the system to chase a fleeting rank on Google. 
+          
+          <br></br><br></br>To me, writing is sacred. It’s not about algorithms but about connection. I write because I want to share the raw, unfiltered lessons I’ve learned through my journey with code — the triumphs, 
+          
+          the failures, and the moments of clarity in between. <br></br><br></br>If my posts reach someone, it won’t be because of a perfectly optimized title but because the words resonate, because they offer real, 
+          
+          tangible knowledge that someone can use. That’s what matters. Real value. Real impact. No fluffs. Just a shared love for the craft.
           </p>
         </div>
         <div className="mt-20">

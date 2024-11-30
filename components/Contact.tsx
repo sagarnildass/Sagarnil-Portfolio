@@ -84,7 +84,7 @@ export const Contact = () => {
         body: JSON.stringify({ email: email.value, message: message.value }),
       });
 
-      console.log("Response status:", response.status);
+      // console.log("Response status:", response.status);
 
       // Check if response is OK (status in the range 200-299)
       if (!response.ok) {
