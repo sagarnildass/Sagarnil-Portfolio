@@ -1,7 +1,7 @@
 /** @type {import('next-sitemap').IConfig} */
 
 module.exports = {
-    siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://sagarnildas.com/",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "https://www.sagarnildas.com/",
     changefreq: "daily",
     priority: 0.7,
     sitemapSize: 5000,

@@ -60,7 +60,7 @@ export const Container: React.FC<ContainerProps> = ({
         />
         <link
           rel="canonical"
-          href={`https://sagarnildas.com${router.asPath}`}
+          href={`https://www.sagarnildas.com${router.asPath}`}
         />
         <meta property="og:type" content={meta.type} />
         <meta property="og:site_name" content="sagarnildas" />
