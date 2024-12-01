@@ -31,7 +31,14 @@ export function BlogLayout({
   }
 
   return (
-    <Container>
+    <Container
+      meta={{
+        title: meta.title,
+        description: meta.description,
+        image: meta.thumbnail, // Use the blog-specific thumbnail
+        type: "article", // Set type to article for blog posts
+      }}
+    >
       <div className="xl:relative md:mt-20 p-8">
         <div className="mx-auto max-w-2xl">
           {previousPathname && (

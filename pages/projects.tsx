@@ -3,7 +3,14 @@ import { Projects } from "@/components/Projects";
 
 export default function ProjectsPage() {
   return (
-    <Container title={`Projects | Sagarnil Das`}>
+    <Container
+      meta={{
+        title: "Projects | Sagarnil Das",
+        description: "Explore the projects by Sagarnil Das, a Machine Learning and Deep Learning Engineer.",
+        image: "/images/projects/mind_matters.png",
+        type: "website",
+      }}
+    >
       <div className="max-w-5xl mx-auto px-8 mt-10 md:mt-20 relative">
         <h1 className="font-bold text-3xl md:text-5xl md:leading-tight text-zinc-50 max-w-3xl">
           I've been building a

@@ -1,8 +1,4 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
 import { Container } from "@/components/Container";
-import { Hero } from "@/components/Hero";
-import { Projects } from "@/components/Projects";
 import { getUserRepositories } from "@/lib/github";
 import { LatestRepos } from "@/components/LatestRepos";
 import { Repository } from "@/types/repos";
@@ -12,7 +8,15 @@ import { user } from "@/constants/user";
 
 export default function Contributions({ repos }: { repos: Repository[] }) {
   return (
-    <Container title={`GitHub Contributions | Sagarnil Das`}>
+    <Container
+      meta={{
+        title: "GitHub Contributions | Sagarnil Das",
+        description:
+          "Explore the open-source contributions of Sagarnil Das. From groundbreaking projects to caffeinated commits, discover how he shapes the open-source world.",
+        image: "/images/projects/filmpire.png", // Update to a relevant image if available
+        type: "website",
+      }}
+    >
       <div className="max-w-5xl mx-auto px-8 mt-10 md:mt-20 relative">
         <h1 className="font-bold text-3xl md:text-5xl md:leading-tight text-zinc-50 max-w-3xl">
           Committing Code and Crimes Against{" "}

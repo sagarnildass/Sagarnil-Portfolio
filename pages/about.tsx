@@ -34,7 +34,15 @@ export default function ProjectsPage() {
     },
   ];
   return (
-    <Container title={`About Me | Sagarnil Das`}>
+    <Container
+      meta={{
+        title: "About Me | Sagarnil Das",
+        description:
+          "Discover more about Sagarnil Das, a Machine Learning and Deep Learning Engineer with over 12 years of experience. Explore his journey, interests, and professional accomplishments.",
+        image: "/images/avatar.jpeg", // Update with a specific image if needed
+        type: "website",
+      }}
+    >
       <div className="max-w-5xl mx-auto px-8 md:mt-20 relative flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-10 justify-between">
         <div>
           <h1 className="font-bold text-3xl md:text-5xl md:leading-tight text-zinc-50 max-w-3xl">
@@ -83,7 +91,7 @@ export default function ProjectsPage() {
       </div>
 
       <div className="max-w-5xl mx-auto px-8 mt-10 relative">
-      <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
+        <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
           When I’m not wrangling data or building AI models, you’ll find me
           jamming on my guitar or reminiscing about my cricket days. Who says
           you can’t mix algorithms with melodies?
