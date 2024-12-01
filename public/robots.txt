@@ -6,5 +6,8 @@ Allow: /
 User-agent: *
 Disallow: /api/*
 
-# Sitemap location
+# Host
+Host: https://www.sagarnildas.com/
+
+# Sitemaps
 Sitemap: https://www.sagarnildas.com/sitemap.xml
