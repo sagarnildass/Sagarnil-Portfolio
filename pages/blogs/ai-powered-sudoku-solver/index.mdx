@@ -89,15 +89,19 @@ export default (props) => <BlogLayout meta={meta} {...props} />;
 1 - Introduction
 ----------------
 
-Welcome to an in-depth exploration of building an AI-powered Diagonal Sudoku Solver using Constraint Propagation techniques. In this blog, I will guide you through the entire development process, from setting up your development environment to implementing and optimizing the solver. Whether you're an aspiring artificial intelligence enthusiast or a seasoned programmer looking to enhance your problem-solving skills, this comprehensive guide is designed to provide you with valuable insights and practical code examples to create an efficient Sudoku-solving AI.
+Welcome to an in-depth exploration of building an AI-powered Diagonal Sudoku Solver using Constraint Propagation techniques. 
 
-The complete code for this project is available here: <a href="https://github.com/sagarnildass/AIND_nanodegree/tree/master/aind-sudoku" target="_blank">AI Sudoku Github Repository</a>
+In this blog, I will guide you through the entire development process, from setting up your development environment to implementing and optimizing the solver. 
+
+Whether you're an aspiring artificial intelligence enthusiast or a seasoned programmer looking to enhance your problem-solving skills, this comprehensive guide is designed to provide you with valuable insights and practical code examples to create an efficient Sudoku-solving AI.
+
+The complete code for this project is available here: <Link href="https://github.com/sagarnildass/AIND_nanodegree/tree/master/aind-sudoku" target="_blank" rel="noopener noreferrer">AI Sudoku Github Repository</Link>
 
 ### 1.1 What is Sudoku?
 
 Sudoku is a widely popular number-placement puzzle that challenges players to fill a 9x9 grid so that each column, each row, and each of the nine 3x3 subgrids (also known as "boxes" or "regions") contain all of the digits from 1 to 9 exactly once. The puzzle starts with a partially filled grid, and the objective is to complete the grid following these constraints.
 
-For a comprehensive overview of Sudoku, you can visit the <a href="https://en.wikipedia.org/wiki/Sudoku" target="_blank">Wikipedia page on Sudoku</a>.
+For a comprehensive overview of Sudoku, you can visit the <Link href="https://en.wikipedia.org/wiki/Sudoku" target="_blank" rel="noopener noreferrer">Wikipedia page on Sudoku</Link>.
 
 Here's a simple illustration of a standard Sudoku puzzle:
 
@@ -122,7 +126,11 @@ In this grid:
 -   **Columns**: Each of the nine vertical lines must also contain all digits from 1 to 9 without repetition.
 -   **Subgrids**: Each of the nine 3x3 subgrids must contain all digits from 1 to 9 without repetition.
 
-Sudoku puzzles range in difficulty based on the number of initially filled cells and the strategies required to solve them. While simple puzzles can be solved with basic elimination techniques, more complex ones may require advanced strategies like Naked Twins, Hidden Pairs, and Constraint Propagation. For an in-depth explanation of these strategies, refer to <a href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank">Sudoku Dragon's strategy guide</a>.
+Sudoku puzzles range in difficulty based on the number of initially filled cells and the strategies required to solve them. 
+
+While simple puzzles can be solved with basic elimination techniques, more complex ones may require advanced strategies like Naked Twins, Hidden Pairs, and Constraint Propagation. 
+
+For an in-depth explanation of these strategies, refer to <Link href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank" rel="noopener noreferrer">Sudoku Dragon's strategy guide</Link>.
 
 ### 1.2 Why Build an AI for Sudoku?
 
@@ -138,7 +146,7 @@ Developing an AI to solve Sudoku puzzles may appear straightforward at first gla
 
 -   **Scalability and Extensibility**: While the project focuses on Diagonal Sudoku, the underlying principles can be extended to other constraint satisfaction problems, making the skills acquired highly transferable.
 
-Moreover, Sudoku serves as a microcosm for many real-world applications where constraint satisfaction and optimization are key, such as scheduling, resource allocation, and puzzle-solving in robotics. For more on constraint satisfaction problems, visit the <a href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank">Wikipedia page on Constraint Satisfaction Problems</a>.
+Moreover, Sudoku serves as a microcosm for many real-world applications where constraint satisfaction and optimization are key, such as scheduling, resource allocation, and puzzle-solving in robotics. For more on constraint satisfaction problems, visit the <Link href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank" rel="noopener noreferrer">Wikipedia page on Constraint Satisfaction Problems</Link>.
 
 * * * * *
 
@@ -169,14 +177,16 @@ The **Diagonal Sudoku Solver** boasts a range of features designed to provide bo
 
 - **Efficient Algorithm Design**: Implements a combination of depth-first search and backtracking algorithms to explore possible number assignments effectively, ensuring the solver can handle puzzles of varying difficulty levels.
 
-For a detailed overview of the solver's capabilities, refer to the <a href="https://en.wikipedia.org/wiki/Sudoku_solving_algorithms" target="_blank">Wikipedia page on Sudoku Solving Algorithms</a>.
+For a detailed overview of the solver's capabilities, refer to the <Link href="https://en.wikipedia.org/wiki/Sudoku_solving_algorithms" target="_blank" rel="noopener noreferrer">Wikipedia page on Sudoku Solving Algorithms</Link>.
 
 * * * * *
 
 ## 3 - Understanding Constraint Propagation
 --------------------------------------------
 
-<a href="https://www.geeksforgeeks.org/constraint-propagation-in-ai/" target="_blank">**Constraint Propagation**</a> is a fundamental technique in artificial intelligence used to reduce the search space by enforcing constraints throughout the problem-solving process. In the context of Sudoku, constraint propagation involves iteratively applying rules to eliminate possible numbers from cells based on the current state of the grid.
+<Link href="https://www.geeksforgeeks.org/constraint-propagation-in-ai/" target="_blank" rel="noopener noreferrer">**Constraint Propagation**</Link> is a fundamental technique in artificial intelligence used to reduce the search space by enforcing constraints throughout the problem-solving process. 
+
+In the context of Sudoku, constraint propagation involves iteratively applying rules to eliminate possible numbers from cells based on the current state of the grid.
 
 <div className="flex justify-center items-center">
     <Image src={backtrack} alt="Constraint Propagation" />
@@ -189,7 +199,7 @@ Key AI strategies employed in building the Sudoku solver include:
 
 -   **Only Choice**: Assigning a number to a cell if that number can only fit in one possible cell within a row, column, or subgrid.
 
--   **Naked Twins**: Identifying pairs of cells within a unit (row, column, or subgrid) that contain the same two possible numbers. These numbers can then be eliminated from the list of possible candidates for the other cells in the unit. Learn more about the <a href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank">Naked Twins strategy here</a>.
+-   **Naked Twins**: Identifying pairs of cells within a unit (row, column, or subgrid) that contain the same two possible numbers. These numbers can then be eliminated from the list of possible candidates for the other cells in the unit. Learn more about the <Link href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank" rel="noopener noreferrer">Naked Twins strategy here</Link>.
 
 <div className="flex justify-center items-center">
     <Image src={NakedTwins} alt="Naked Twins Sudoku strategy" />
@@ -201,7 +211,7 @@ Key AI strategies employed in building the Sudoku solver include:
     <Image src={DiagonalConstraint} alt="Diagonal Constraint" />
 </div>
 
--   **Search Algorithms**: Implementing depth-first search combined with backtracking to explore possible number assignments systematically until a valid solution is found.  For an introduction to search algorithms in AI, check out the <a href="https://www.geeksforgeeks.org/searching-algorithms/" target="_blank">GeeksforGeeks search algorithms overview</a>.
+-   **Search Algorithms**: Implementing depth-first search combined with backtracking to explore possible number assignments systematically until a valid solution is found.  For an introduction to search algorithms in AI, check out the <Link href="https://www.geeksforgeeks.org/searching-algorithms/" target="_blank" rel="noopener noreferrer">GeeksforGeeks search algorithms overview</Link>.
 
 <div className="flex justify-center items-center bg-white">
     <Image src={Backtracking} alt="Backtracking Depth First Search Sudoku" />
@@ -233,7 +243,7 @@ Row: [ '23', '23', '1', '4', '5', '6', '7', '8', '9' ]
 
 After applying the Naked Twins strategy, the row remains unchanged except that **'2'** and **'3'** are removed from the other cells (if they were present).
 
-For a more detailed explanation and additional examples, you can refer to the <a href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank">Sudoku Dragon Strategy Guide</a>.
+For a more detailed explanation and additional examples, you can refer to the <Link href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank" rel="noopener noreferrer">Sudoku Dragon Strategy Guide</Link>.
 
 ### 4.2 Algorithm Explanation
 
@@ -254,7 +264,7 @@ Implementing the Naked Twins strategy involves several thoughtful steps to ensur
 
 The Naked Twins strategy leverages the fundamental principles of constraint propagation. By recognizing that certain digits must occupy specific cells, we can confidently eliminate those digits from other cells within the same unit, reducing the complexity of the puzzle.
 
-For those interested in the theoretical underpinnings of this strategy, the <a href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank">Wikipedia page on Constraint Satisfaction Problems</a> offers a comprehensive overview of how such techniques are applied in various domains.
+For those interested in the theoretical underpinnings of this strategy, the <Link href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank" rel="noopener noreferrer">Wikipedia page on Constraint Satisfaction Problems</Link> offers a comprehensive overview of how such techniques are applied in various domains.
 
 ### 4.3 Code Implementation
 
@@ -378,7 +388,7 @@ By identifying and applying the Naked Twins strategy, we've successfully reduced
 
 Implementing the Naked Twins strategy in this manner demonstrates how constraint propagation can effectively streamline the solving process. Each elimination step brings the solver closer to the final solution by methodically reducing the number of possible candidates for each cell.
 
-For more intricate examples and a deeper understanding of how Naked Twins can be leveraged in various units (rows, columns, and subgrids), refer to the <a href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank">Sudoku Dragon Strategy Guide</a>.
+For more intricate examples and a deeper understanding of how Naked Twins can be leveraged in various units (rows, columns, and subgrids), refer to the <Link href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank" rel="noopener noreferrer">Sudoku Dragon Strategy Guide</Link>.
 
 * * * * *
 
@@ -395,7 +405,7 @@ As I continued developing the Sudoku solver, I decided to take on the challenge 
 
 This means that in addition to the usual constraints, the solver must ensure that the numbers 1 through 9 appear without repetition along both diagonals. Incorporating these diagonal constraints significantly increases the solver's complexity and showcases the power of constraint propagation in handling more intricate rules.
 
-For a comprehensive understanding of Diagonal Sudoku, you can refer to the <a href="https://en.wikipedia.org/wiki/Sudoku#Variants" target="_blank">Wikipedia page on Sudoku Variants</a>, which details various modifications and their unique challenges.
+For a comprehensive understanding of Diagonal Sudoku, you can refer to the <Link href="https://en.wikipedia.org/wiki/Sudoku#Variants" target="_blank" rel="noopener noreferrer">Wikipedia page on Sudoku Variants</Link>, which details various modifications and their unique challenges.
 
 ### 5.2 Integrating Diagonals into the Solver
 
@@ -415,7 +425,7 @@ Integrating diagonal constraints into the Sudoku solver was an exciting part of 
 
 This integration was pivotal in enabling the solver to handle Diagonal Sudoku effectively. It demonstrated how versatile the constraint propagation approach is, allowing for the seamless addition of new rules without overhauling the existing architecture.
 
-For more insights into handling additional constraints in Sudoku, the <a href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank">Sudoku Dragon Strategy Guide</a> offers valuable strategies and examples.
+For more insights into handling additional constraints in Sudoku, the <Link href="http://www.sudokudragon.com/sudokustrategy.htm" target="_blank" rel="noopener noreferrer">Sudoku Dragon Strategy Guide</Link> offers valuable strategies and examples.
 
 ### 5.3 Code Implementation
 
@@ -688,7 +698,7 @@ By defining `unitlist`, `units`, and `peers` in this manner, the solver gains a 
 
 The meticulous construction of `unitlist`, `units`, and `peers` underscores the importance of robust data structures in AI-driven problem-solving. By accurately mapping the relationships and constraints within the Sudoku grid, the solver is empowered to apply intelligent strategies that mirror human logical reasoning. This foundational setup not only enhances the solver's efficiency but also exemplifies the seamless integration of algorithmic design with practical AI applications.
 
-For a more detailed exploration of these concepts, you might find the <a href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank">Wikipedia page on Constraint Satisfaction Problems</a> insightful.
+For a more detailed exploration of these concepts, you might find the <Link href="https://en.wikipedia.org/wiki/Constraint_satisfaction_problem" target="_blank" rel="noopener noreferrer">Wikipedia page on Constraint Satisfaction Problems</Link> insightful.
 
 Here's the full code
 
@@ -1029,26 +1039,26 @@ While the current implementation is robust and functional, there is always room 
 
 1.  **Performance Optimization**:
 
-    -   Implement more advanced constraint propagation strategies, such as <a href="https://sudoku.com/sudoku-rules/hidden-pairs/" target="_blank">"Hidden Pairs"</a> or <a href="https://sudoku.com/sudoku-rules/h-wing/" target="_blank">"X-Wing"</a> to reduce reliance on search.
-    -   Use <a href="https://en.wikipedia.org/wiki/Heuristic_search" target="_blank">heuristic-based search algorithms</a> to prioritize branches that are more likely to lead to solutions.
+    -   Implement more advanced constraint propagation strategies, such as <Link href="https://sudoku.com/sudoku-rules/hidden-pairs/" target="_blank" rel="noopener noreferrer">"Hidden Pairs"</Link> or <Link href="https://sudoku.com/sudoku-rules/h-wing/" target="_blank" rel="noopener noreferrer">"X-Wing"</Link> to reduce reliance on search.
+    -   Use <Link href="https://en.wikipedia.org/wiki/Heuristic_search" target="_blank" rel="noopener noreferrer">heuristic-based search algorithms</Link> to prioritize branches that are more likely to lead to solutions.
 2.  **Enhanced Visualization**:
 
     -   Add animations to highlight cells being updated during constraint propagation. 
-    -   Display probabilities or reasoning for specific moves visually on the board. For an example of probability-based reasoning, see <a href="https://arxiv.org/abs/1304.3422" target="_blank">this article on constraint solving</a>.
+    -   Display probabilities or reasoning for specific moves visually on the board. For an example of probability-based reasoning, see <Link href="https://arxiv.org/abs/1304.3422" target="_blank" rel="noopener noreferrer">this article on constraint solving</Link>.
 3.  **User Interaction**:
 
-    -   Allow users to input their own Sudoku puzzles through a graphical interface. Learn how to build <a href="https://docs.python.org/3/library/tkinter.html" target="_blank">GUIs in Python using Tkinter</a>.
-    -   Add a feature to pause, step through, or replay the solving process. See an example of <a href="https://matplotlib.org/stable/gallery/animation/index.html" target="_blank">replayable visualizations</a>.
+    -   Allow users to input their own Sudoku puzzles through a graphical interface. Learn how to build <Link href="https://docs.python.org/3/library/tkinter.html" target="_blank" rel="noopener noreferrer">GUIs in Python using Tkinter</Link>.
+    -   Add a feature to pause, step through, or replay the solving process. See an example of <Link href="https://matplotlib.org/stable/gallery/animation/index.html" target="_blank" rel="noopener noreferrer">replayable visualizations</Link>.
 4.  **Machine Learning Integration**:
 
-    -   Train a neural network to predict potential solutions for cells, reducing reliance on rule-based techniques. A good starting point is this <a href="https://www.analyticsvidhya.com/blog/2021/05/solving-sudoku-from-image-using-deep-learning-with-python-code/" target="_blank">tutorial on deep learning for Sudoku</a>.
-    -   Use <a href="https://www.geeksforgeeks.org/what-is-reinforcement-learning/" target="_blank">reinforcement learning</a> to develop an agent that learns Sudoku-solving strategies dynamically.
+    -   Train a neural network to predict potential solutions for cells, reducing reliance on rule-based techniques. A good starting point is this <Link href="https://www.analyticsvidhya.com/blog/2021/05/solving-sudoku-from-image-using-deep-learning-with-python-code/" target="_blank" rel="noopener noreferrer">tutorial on deep learning for Sudoku</Link>.
+    -   Use <Link href="https://www.geeksforgeeks.org/what-is-reinforcement-learning/" target="_blank" rel="noopener noreferrer">reinforcement learning</Link> to develop an agent that learns Sudoku-solving strategies dynamically.
 5.  **Support for More Variants**:
 
-    -   Extend the solver to handle Sudoku variants like diagonal Sudoku (already partially supported), Samurai Sudoku, or Killer Sudoku. Learn about <a href="https://sudoku-puzzles.net/all-puzzle-types/" target="_blank">Sudoku variants</a>.
+    -   Extend the solver to handle Sudoku variants like diagonal Sudoku (already partially supported), Samurai Sudoku, or Killer Sudoku. Learn about <Link href="https://sudoku-puzzles.net/all-puzzle-types/" target="_blank" rel="noopener noreferrer">Sudoku variants</Link>.
 6.  **Web or Mobile Application**:
 
-    -   Deploy the solver as a web or mobile app to make it accessible to a broader audience, integrating visualization and logging features for educational purposes. Check out <a href="https://flask.palletsprojects.com/en/2.2.x/" target="_blank">Flask for web apps</a> and <a href="https://reactnative.dev/" target="_blank">React Native for mobile apps</a>.
+    -   Deploy the solver as a web or mobile app to make it accessible to a broader audience, integrating visualization and logging features for educational purposes. Check out <Link href="https://flask.palletsprojects.com/en/2.2.x/" target="_blank" rel="noopener noreferrer">Flask for web apps</Link> and <Link href="https://reactnative.dev/" target="_blank" rel="noopener noreferrer">React Native for mobile apps</Link>.
 
 ### 8.3 **Final Thoughts**
 
@@ -1062,7 +1072,7 @@ We hope this project inspires further exploration and enhancements. Happy puzzli
 
 Ready to dive deeper? Access the complete source code, detailed documentation, and ongoing updates on our GitHub repository. Whether you're looking to experiment with the AI, contribute to its development, or adapt it for your unique applications, the repository is your gateway to the Sudoku world.
 
-<a href="https://github.com/sagarnildass/AIND_nanodegree/tree/master/aind-sudoku" target="_blank">**Check out the Sudoku GitHub Repository**</a>
+<Link href="https://github.com/sagarnildass/AIND_nanodegree/tree/master/aind-sudoku" target="_blank" rel="noopener noreferrer">**Check out the Sudoku GitHub Repository**</Link>
 
 Thank you for following along! We hope this project has enriched your understanding of Constraint Propagation and inspired you to embark on your own AI adventures. Feel free to reach out with questions, feedback, or contributions---let's continue building intelligent systems together.
 
@@ -1071,3 +1081,54 @@ Thank you for following along! We hope this project has enriched your understand
 *Happy Coding!*
 
 <Link href="/blogs">🔙 Back to all blogs</Link> | <Link href="/">🏠 Home Page</Link>
+
+--- 
+
+## About the Author
+
+<div className="flex justify-center items-center w-full">
+  <Link href="/">
+    <Image
+        src="/images/dp/dp3.jpg"
+        alt="Sagarnil Das"
+        width={300}
+        height={300}
+        className="rounded-full"
+    />
+  </Link>
+</div>
+
+### Sagarnil Das
+
+<Link href="/">Sagarnil Das</Link> is a seasoned AI enthusiast with over 12 years of experience in Machine Learning and Deep Learning. 
+
+He has built scalable AI ecosystems for global giants like the NHS and developed innovative mental health applications that detect emotions and suicidal tendencies.  
+
+Some of his other accomplishments includes: 
+
+-  **Ex-NASA researcher**
+-  **Ex-Udacity Mentor**
+-  **Intel Edge AI scholarship winner**
+-  **Kaggle Notebooks expert**
+
+When he's not immersed in data or crafting AI models, Sagarnil enjoys playing the guitar and doing street photography. 
+
+An avid Dream Theater fan, he believes in blending logic with creativity to solve complex problems.
+
+<Link href="/about">You can find out more about Sagarnil here.</Link>
+
+To contact him regarding any guidance, questions, feedbacks or challenges, you can contact him by clicking the chat icon on the bottom right of the screen.
+
+**Connect with Sagarnil:**
+
+<div className="flex space-x-4 justify-center mt-4">
+  <Link href="https://www.linkedin.com/in/sagarnildas/" target="_blank" rel="noopener noreferrer">
+    LinkedIn
+  </Link>
+  <Link href="https://github.com/sagarnildass/" target="_blank" rel="noopener noreferrer">
+    GitHub
+  </Link>
+  <Link href="https://x.com/sagarnildas03" target="_blank" rel="noopener noreferrer">
+    Twitter
+  </Link>
+</div>

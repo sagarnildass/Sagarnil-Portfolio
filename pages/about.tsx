@@ -70,7 +70,7 @@ export default function ProjectsPage() {
               <a
                 key={`footer-link-${idx}`}
                 href={socialLink.link}
-                className="text-zinc-500 text-sm relative"
+                className="text-cyan-500 text-sm relative"
                 target="__blank"
               >
                 <span className="relative z-10 px-2 py-2 inline-block hover:text-cyan-500">

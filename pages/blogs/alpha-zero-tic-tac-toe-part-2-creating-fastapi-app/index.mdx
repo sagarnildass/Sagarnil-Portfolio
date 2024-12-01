@@ -1,0 +1,1001 @@
+import { BlogLayout } from "@/components/BlogLayout";
+import banner from "./banner.png";
+import Image from "next/image";
+import Link from "next/link";
+import MCTS from "./MCTS.jpg"
+import APIMemes from "./API_memes.jpeg"
+import FastAPIMemes from "./fastapi_meme.jpeg"
+import SwaggerUI from "./swaggerUI.png"
+
+export const meta = {
+  author: "Sagarnil Das",
+  date: "2024-12-01",
+  title:
+    "Training AlphaZero with Monte Carlo Tree Search: Building a Tic-Tac-Toe Champion (Part 2: Creating the Backend with FastAPI)",
+  description:
+    "Advance your AlphaZero Tic-Tac-Toe project by building a powerful FastAPI backend. In Part 2 of our blog series, learn how to set up FastAPI, create RESTful endpoints for game management, integrate the trained AlphaZero model with Monte Carlo Tree Search (MCTS), and optimize for real-time performance to deliver a seamless AI-driven gaming experience.",
+  thumbnail: "/images/blogs/alphazero_banner.png",
+};
+
+export default (props) => <BlogLayout meta={meta} {...props} />;
+
+<Image
+  src={banner}
+  alt="Training AlphaZero with Monte Carlo Tree Search: Building a Tic-Tac-Toe Champion"
+/>
+
+## **Table of Contents**
+
+1.  **Introduction**
+
+    - Recap of Part 1
+    - Objectives for Part 2
+    - Overview of Backend Development with FastAPI
+
+2.  **Setting Up the FastAPI Backend**
+
+    - Installing Required Dependencies
+    - Project Structure Overview
+
+3.  **Building RESTful Endpoints**
+
+    - **Start Game Endpoint (`/start_game`)**
+      - Purpose and Functionality
+      - Request and Response Models
+    - **Make Move Endpoint (`/make_move`)**
+      - Handling Player Moves
+      - Validating Moves and Updating Game State
+    - **AI Move Endpoint (`/ai_move`)**
+      - Integrating MCTS with AI Decisions
+      - Executing and Responding to AI Moves
+    - **Get Board State Endpoint (`/get_board`)**
+      - Retrieving Current Game Status
+      - Structuring Board Data in Responses
+    - **AI Probability Endpoint (`/ai_probability`)**
+      - Calculating AI's Winning Probability
+      - Utilizing the Policy Network for Predictions
+    - **MCTS Tree Endpoints**
+      - **Get MCTS Tree (`/get_mcts_tree`)**
+      - **Get MCTS Subtree (`/get_mcts_subtree`)**
+      - **Get MCTS Summary (`/get_mcts_summary`)**
+
+4.  **Integrating the Trained AlphaZero Model**
+
+    - Loading the Trained Policy Model
+    - Connecting the Policy Network with MCTS
+    - Managing Model Inference within Endpoints
+
+5.  **Conclusion**
+
+    - Summary of Backend Development
+    - Transitioning to Frontend Integration in Part 3
+    - Future Enhancements and Optimizations
+
+**Codes**: <Link href="https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App" target="__blank" rel="noopener noreferrer">Check the Github Repo for the full code</Link>
+
+---
+
+## 1. **Introduction**
+
+### Recap of Part 1
+
+<Link href="/blogs/alpha-zero-tic-tac-toe-part-1-training-the-model" target="_blank">In Part 1 of this blog series named Training AlphaZero with Monte Carlo Tree Search: Building a Tic-Tac-Toe Champion (Part 1: Training the Model)</Link>, we created an AlphaZero-inspired AI agent for a 6x6 Tic-Tac-Toe game. 
+
+We covered the game mechanics, introduced <Link href="https://en.wikipedia.org/wiki/Monte_Carlo_tree_search" target="__blank" rel="noopener noreferrer">Monte Carlo Tree Search (MCTS)</Link>, designed a <Link href="https://towardsdatascience.com/policy-networks-vs-value-networks-in-reinforcement-learning-da2776056ad2" target="__blank" rel="noopener noreferrer">convolutional neural network for policy and value predictions</Link>, and set up a training loop using self-play and reinforcement learning. This work resulted in a trained model capable of making strategic decisions in the game.
+
+If you want to get a detailed refresher about Reinforcement Learning, you can check the <Link href="/blogs/playing-hangman-with-reinforcement-learning" target="__blank">blog about training a Reinforcement Learning model with Curriculum Learning here</Link>.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={MCTS}
+    alt="Monte Carlo Tree Search Tic Tac Toe"
+    width={800}
+    height={400}
+  />
+</div>
+
+### Objectives for Part 2
+
+Now, in the first part, our codes and the models resided inside a Jupyter Notebook. But this is a big problem! If someone wants to play with our trained model, they will have to install all the necessary dependencies, install Jupyter Notebook, load the model, and then play.
+
+To overcome this, we need to build a <Link href="https://medium.com/altogic/backend-basics-restful-api-api-rest-methods-json-examples-429744ba0831" target="__blank" rel="noopener noreferrer">backend API application</Link>. A backend API acts as a bridge between our AI model and the user interface. By creating an API, we can host our trained model on a server and provide endpoints that the frontend can interact with. 
+
+This setup allows users to play the game through a web interface without needing to manage dependencies or understand the underlying AI mechanics. The backend handles all the complex computations and game logic, ensuring a smooth and user-friendly experience.
+
+With a backend API, we can create a playable UI in the frontend, such as a web application where users can make moves and receive AI responses in real-time. 
+
+Here's how our final UI will look at the end of part 3 of this series.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={banner}
+    alt="Monte Carlo Tree Search Tic Tac Toe"
+    width={800}
+    height={400}
+  />
+</div>
+
+
+#### Importance of an API
+
+To understand why an API is essential, let's consider a real-world example: buying cinema tickets. Imagine you want to watch a movie at a local cinema. Here's how the process typically works:
+
+1. **Selecting a Movie:**  
+   You choose a specific movie you want to watch.
+
+2. **Choosing a Showtime and Seat:**  
+   You select a particular showtime and pick your desired seat from the available options.
+
+3. **Purchasing the Ticket:**  
+   You complete the purchase, and your ticket is reserved for that specific seat and showtime.
+
+4. **Accessing the Theater:**  
+   On the day of the movie, you present your ticket and are directed to your exact seat in the designated screen.
+
+In this scenario, several things are happening behind the scenes:
+
+- **Data Management:**  
+  The cinema's system keeps track of which seats are available for each movie and showtime.
+
+- **Validation:**  
+  When you select a seat, the system ensures that the seat isn't already booked by someone else.
+
+- **Security:**  
+  Only those with valid tickets can access the specific seats for the chosen movie and showtime.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={APIMemes}
+    alt="Importance of API for creating backend applications."
+    width={800}
+    height={400}
+  />
+</div>
+
+Without an API, managing this entire process would be cumbersome. You'd need to handle seat availability, prevent double bookings, and ensure secure access—all manually and without a streamlined interface.
+
+**How APIs Simplify This Process:**
+
+An **API (Application Programming Interface)** acts as a bridge between different software components, allowing them to communicate seamlessly. In the cinema example:
+
+- **Frontend Interaction:**  
+  Your web or mobile app communicates with the backend system via APIs to fetch available movies, showtimes, and seats.
+
+- **Backend Processing:**  
+  The backend handles your requests, processes them (like reserving a seat), and sends back the necessary information.
+
+- **Security and Validation:**  
+  APIs ensure that all actions are validated and that only authorized operations are performed, such as preventing multiple users from booking the same seat simultaneously.
+
+**Why We Need an API for Our Tic-Tac-Toe AI:**
+
+Similarly, for our AlphaZero-inspired Tic-Tac-Toe application:
+
+- **Game Management:**  
+  The backend API manages the game state, tracks moves, and determines the outcome.
+
+- **AI Integration:**  
+  When you make a move, the frontend sends this information to the backend via an API. The backend then uses the trained AlphaZero model to decide the AI's next move and sends it back to the frontend.
+
+- **User Experience:**  
+  By separating the frontend (what users interact with) from the backend (where the game logic and AI reside), we create a smooth and efficient experience. Users don't need to worry about the complexities of the AI or the game logic; they simply interact with an intuitive interface.
+
+- **Scalability and Maintenance:**  
+  An API allows us to update or enhance the backend independently of the frontend. Whether we want to improve the AI, add new features, or optimize performance, we can do so without disrupting the user interface.
+
+In summary, an API is crucial for creating a reliable, secure, and scalable application. It enables different parts of our system to work together efficiently, providing users with a seamless and enjoyable gaming experience.
+
+### Overview of Backend Development with FastAPI
+
+<Link href="https://fastapi.tiangolo.com/" target="__blank" rel="noopener noreferrer">**FastAPI**</Link> is a modern, high-performance web framework for building APIs with Python based on standard Python type hints. It is designed to be easy to use, scalable, and efficient, making it an excellent choice for developing the backend of our AI-driven Tic-Tac-Toe application.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={FastAPIMemes}
+    alt="FastAPI meme"
+  />
+</div>
+
+By the end of **Part 2**, you'll have a fully functional backend that serves as the brain of your Tic-Tac-Toe application, capable of managing game states and facilitating intelligent AI gameplay.
+
+<Link
+  href="https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App"
+  target="__blank"
+  rel="noopener noreferrer"
+>
+  The full code for creating this Alpha Zero agent with Monte Carlo Tree Search can be found here.
+</Link>
+
+#### Steps for FastAPI integration
+
+<Link href="/blogs/alpha-zero-tic-tac-toe-part-1-training-the-model" target="_blank">Building upon the trained model from Part 1</Link>, **Part 2** focuses on bringing our AI to life by developing a robust backend using **FastAPI**. The primary objectives for this part include:
+
+- **Setting Up the FastAPI Environment:** Installing necessary dependencies and configuring the project structure.
+- **Building RESTful Endpoints:** Creating APIs to manage game sessions, handle player and AI moves, and provide AI recommendations.
+- **Integrating the Trained Model:** Loading and utilizing the trained AlphaZero policy model within the backend to enable dynamic gameplay.
+- **Optimizing for Real-Time Performance:** Leveraging FastAPI’s asynchronous capabilities to ensure the backend is fast, responsive, and scalable.
+
+By achieving these objectives, we aim to create a seamless bridge between our AI agent and a user-friendly frontend, paving the way for interactive gameplay in **Part 3**.
+
+---
+
+## 2. **Setting Up the FastAPI Backend**
+
+### Installing Required Dependencies
+
+Before diving into building our backend, it's essential to set up the development environment with all the necessary dependencies. Here's a step-by-step guide to get everything up and running smoothly.
+
+#### Step 1: Create a Virtual Environment
+
+Creating a virtual environment ensures that our project dependencies are isolated from other projects on your system. This helps prevent version conflicts and maintains a clean workspace.
+
+```bash
+# Clone Github repository
+git clone https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App
+
+# Navigate to the project directory
+cd AlphaZero-Tic-Tac-Toe-App/backend
+
+# Create a virtual environment named 'venv'
+python3 -m venv venv
+
+# Activate the virtual environment
+# On Windows:
+venv\Scripts\activate
+
+# On Unix or MacOS:
+source venv/bin/activate
+```
+
+#### Step 2: Install Dependencies
+
+We have a `requirements.txt` file that lists all the necessary Python packages for our backend. Install them using pip:
+
+```bash
+pip install -r requirements.txt
+```
+
+This command installs the following packages:
+
+-   **FastAPI:** A modern, fast (high-performance) web framework for building APIs with Python.
+-   **Uvicorn:** A lightning-fast ASGI server implementation, using uvloop and httptools.
+-   **NumPy:** A fundamental package for scientific computing with Python.
+-   **Pydantic:** Data validation and settings management using Python type annotations.
+-   **Torch (PyTorch):** An open-source machine learning library used for applications such as computer vision and natural language processing.
+
+### Project Structure Overview
+
+Understanding the project structure is crucial for navigating and maintaining the codebase efficiently. Here's an overview of our backend directory:
+
+```css
+AlphaZero-Tic-Tac-Toe-App/
+├── backend/
+│   ├── 6-6-4-pie.policy
+│   ├── ConnectN.py
+│   ├── __init__.py
+│   ├── main.py
+│   ├── MCTS.py
+│   ├── original_codes_and_notebooks/
+│   │   ├── alphazero-TicTacToe-advanced.ipynb
+│   │   ├── alphazero-TicTacToe-advanced-play-only.ipynb
+│   │   ├── alphazero-TicTacToe.ipynb
+│   │   ├── ConnectN.py
+│   │   ├── main.py
+│   │   ├── MCTS.py
+│   │   └── PlayNew.py
+│   ├── policy.py
+│   └── requirements.txt
+```
+
+Let's break down the purpose of each component:
+
+#### Root Directory: `backend/`
+
+-   **`main.py`:**\
+    The entry point of our FastAPI application. It defines the API endpoints and handles incoming HTTP requests.
+
+-   **`ConnectN.py`:**\
+    Contains the implementation of our customized Tic-Tac-Toe game logic, handling game states, moves, and victory conditions.
+
+-   **`MCTS.py`:**\
+    Implements the Monte Carlo Tree Search algorithm, which is essential for our AI to make informed decisions during gameplay.
+
+-   **`policy.py`:**\
+    Defines the neural network architecture used for predicting move probabilities and evaluating game states.
+
+-   **`6-6-4-pie.policy`:**\
+    The trained policy network model file. This file contains the weights of our neural network after training, enabling the AI to make strategic decisions.
+
+-   **`__init__.py`:**\
+    An empty file that signifies to Python that this directory should be treated as a package.
+
+-   **`original_codes_and_notebooks/`:**\
+    A collection of original scripts and Jupyter Notebooks used during the initial development and experimentation phase. These include:
+
+    -   **Jupyter Notebooks (`.ipynb`):**\
+        Used for training and refining our AI agent in an interactive environment.
+    -   **Python Scripts:**\
+        Original versions of our backend scripts before refactoring and optimization.
+
+### Starting the Backend server
+
+You can now start the backend server with this command:
+
+```bash
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+```
+
+---
+
+## 3. **Building RESTful Endpoints**
+
+Creating RESTful endpoints is a crucial step in developing our FastAPI backend. These endpoints allow the frontend to interact with the backend seamlessly, enabling functionalities such as starting a game, making moves, and retrieving game states. 
+
+In this section, we'll explore each endpoint in detail, outlining their purpose, functionality, and the request and response models they utilize.
+
+Once you have started the backend server, you can access all the API endpoints (for testing purpose) through FastAPI's swagger UI. In the browser tab just open up **http://0.0.0.0:8000/docs** and you will be able to see all the endpoints and test them. 
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={SwaggerUI}
+    alt="FastAPI swagger UI for the Alphazero MCTS backend"
+    width={800}
+    height={400}
+  />
+</div>
+
+### **Start Game Endpoint (`/start_game`)**
+
+#### Purpose and Functionality
+
+The `/start_game` endpoint initializes a new game of Tic-Tac-Toe. It allows the user to choose whether they want to play first (Player X) or second (Player O). This endpoint resets the game state, ensuring that each new game starts fresh.
+
+#### Request and Response Models
+
+- **Request Model:**  
+  The request expects a JSON payload specifying the player who will make the first move.
+  
+  ```json
+  {
+    "player": 1  // 1 for Player X (first), -1 for Player O (second)
+  }
+  ```
+- **Response Model:**\
+  Upon successfully starting a game, the endpoint responds with the current board state, the active player, and a status message.
+
+  ```json
+  {
+  "status": "Game started",
+  "board": [
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0]
+  ],
+  "player": 1
+   }
+  ```
+
+#### Implementation
+
+Here's how the `/start_game` endpoint is implemented in `main.py`:
+
+```python
+# Endpoint to start a new game
+@app.post("/start_game")
+def start_game(request: StartGameRequest):
+    global game
+    player = request.player
+    if player not in [1, -1]:
+        raise HTTPException(status_code=400, detail="Invalid player selection")
+    
+    # Initialize the game
+    game = ConnectN(**game_setting)
+    game.player = player  # Set the current player based on choice
+    
+    return {
+        "status": "Game started",
+        "board": game.state.tolist(),
+        "player": int(game.player)
+    }
+```
+
+### **Make Move Endpoint (`/make_move`)**
+
+#### Handling Player Moves
+
+The `/make_move` endpoint allows the user to make a move by specifying the row and column on the board where they want to place their symbol. This endpoint updates the game state accordingly.
+
+#### Validating Moves and Updating Game State
+
+Before updating the board, the endpoint checks whether the move is valid (i.e., the chosen cell is empty). If the move is valid, it updates the board and switches the active player. If the move results in a win or a draw, it updates the game status.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    The request expects a JSON payload with the row and column indices where the player wants to place their symbol.
+
+    ```json
+    {
+    "row": 2,
+    "col": 3
+    }
+    ```
+
+-   **Response Model:**\
+    The response includes the updated board state, the next active player, and the game status (if the game has ended).
+
+    ```json
+    {
+    "status": "success",
+    "board": [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, -1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+    ],
+    "player": -1,
+    "winner": null  // Can be 1 (Player X), -1 (Player O), or null if the game is ongoing
+    }
+    ```
+
+#### Implementation
+
+Here's the implementation of the `/make_move` endpoint:
+
+```python
+# Endpoint to make a move
+@app.post("/make_move")
+def make_move(move: Move):
+    global game
+    if game.score is not None:
+        return {"status": "Game over", "winner": int(game.score)}
+    success = game.move((move.row, move.col))
+    if success:
+        winner = game.get_score()
+        return {
+            "status": "success",
+            "board": game.state.tolist(),
+            "player": int(game.player),
+            "winner": int(winner) if winner is not None else None
+        }
+    else:
+        raise HTTPException(status_code=400, detail="Invalid move")
+```
+
+### **AI Move Endpoint (`/ai_move`)**
+
+#### Integrating MCTS with AI Decisions
+
+The `/ai_move` endpoint enables the AI to make a move using the Monte Carlo Tree Search (MCTS) algorithm guided by the trained AlphaZero model. This endpoint automates the AI's decision-making process, ensuring that it responds intelligently to the player's moves.
+
+#### Executing and Responding to AI Moves
+
+When the endpoint is called, it performs the following steps:
+
+1.  **Check Game Status:**\
+    Determines if the game is already over.
+
+2.  **Perform AI Move:**\
+    Utilizes the `Challenge_Player_MCTS` function to select the best move based on MCTS simulations.
+
+3.  **Update Game State:**\
+    Applies the AI's move to the game board.
+
+4.  **Return Response:**\
+    Provides the updated board state, the AI's move, the next active player, and the game status.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    This endpoint does not require any input parameters.
+
+-   **Response Model:**\
+    The response includes the AI's move, the updated board state, the next active player, and the game status.
+
+    ```json
+    {
+    "status": "success",
+    "move": [2, 3],
+    "board": [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, -1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+    ],
+    "player": 1,
+    "winner": null
+    }
+    ```
+
+#### Implementation
+
+Here's how the `/ai_move` endpoint is implemented:
+
+```python
+# Endpoint for the AI to make a move
+@app.get("/ai_move")
+def ai_move():
+    global game, last_mytree
+    if game.score is not None:
+        return {"status": "Game over", "winner": int(game.score)}
+    # Perform AI move
+    move, mytree = Challenge_Player_MCTS(game)
+    success = game.move(move)
+    if success:
+        winner = game.get_score()
+        # Save the last MCTS tree for visualization
+        last_mytree = mytree
+        print(f"Last MCTS Tree Updated: {last_mytree}")  # Debug log
+        return {
+            "status": "success",
+            "move": [int(move[0]), int(move[1])],
+            "board": game.state.tolist(),
+            "player": int(game.player),
+            "winner": int(winner) if winner is not None else None
+        }
+    else:
+        raise HTTPException(status_code=400, detail="AI move failed")
+```
+
+### **Get Board State Endpoint (`/get_board`)**
+
+#### Retrieving Current Game Status
+
+The `/get_board` endpoint allows users to fetch the current state of the game at any point. This is essential for displaying the game board on the frontend and updating it in real-time as moves are made.
+
+#### Structuring Board Data in Responses
+
+The endpoint returns the board as a 2D list, indicating the positions of Player X, Player O, and empty cells. It also includes information about the active player and whether there's a winner.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    This endpoint does not require any input parameters.
+
+-   **Response Model:**\
+    The response includes the current board state, the active player, and the game status.
+
+    ```json
+    {
+    "board": [
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 1, 0, 0],
+        [0, 0, -1, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0]
+    ],
+    "player": 1,
+    "winner": null
+    }
+    ```
+
+#### Implementation
+
+Here's the implementation of the `/get_board` endpoint:
+
+```python
+# Endpoint to get the current board
+@app.get("/get_board")
+def get_board():
+    global game
+    winner = game.get_score()
+    return {
+        "board": game.state.tolist(),
+        "player": int(game.player),
+        "winner": int(winner) if winner is not None else None
+    }
+```
+
+### **AI Probability Endpoint (`/ai_probability`)**
+
+#### Calculating AI's Winning Probability
+
+The `/ai_probability` endpoint provides an estimate of the AI's likelihood of winning from the current game state. This probabilistic insight can enhance the user experience by offering predictions about the game's outcome.
+
+#### Utilizing the Policy Network for Predictions
+
+The endpoint leverages the trained policy network to evaluate the current board state. It processes the game state through the neural network to obtain a value prediction, which is then transformed into a probability between 0 and 1.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    This endpoint does not require any input parameters.
+
+-   **Response Model:**\
+    The response includes the game status, the winner (if any), and the AI's probability of winning.
+
+    ```json
+    {
+    "status": "In progress",
+    "probability_of_winning": 0.75
+    }
+    ```
+
+#### Implementation
+
+Here's how the `/ai_probability` endpoint is implemented:
+
+```python
+# Endpoint for the AI's winning probability
+@app.get("/ai_probability")
+def ai_probability():
+    """
+    Compute and return the AI's probability of winning at the current state.
+    """
+    global game, challenge_policy
+
+    if game.score is not None:
+        return {
+            "status": "Game over",
+            "winner": int(game.score),
+            "probability_of_winning": None
+        }
+
+    # Process the current game state with the AI policy
+    frame = torch.tensor(game.state * AI_PLAYER, dtype=torch.float, device="cpu").unsqueeze(0).unsqueeze(0)
+    _, value = challenge_policy(frame)
+
+    # Transform value into a probability of AI winning
+    probability_of_winning = ((value.item() + 1) / 2)  # Convert from [-1, 1] range to [0, 1]
+
+    return {
+        "status": "In progress",
+        "probability_of_winning": probability_of_winning
+    }
+```
+
+### **MCTS Tree Endpoints**
+
+These endpoints provide insights into the internal workings of the Monte Carlo Tree Search (MCTS) algorithm, allowing for deeper analysis and visualization of the AI's decision-making process.
+
+#### **Get MCTS Tree (`/get_mcts_tree`)**
+
+#### Purpose and Functionality
+
+The `/get_mcts_tree` endpoint retrieves the entire MCTS tree up to a specified depth. This is useful for visualizing the tree structure and understanding how the AI explores possible moves.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    Accepts an optional query parameter `max_depth` to limit the depth of the returned tree.
+
+    ```bash
+    GET /get_mcts_tree?max_depth=3
+    ```
+
+-   **Response Model:**\
+    Returns a JSON representation of the MCTS tree structure.
+
+    ```json
+    {
+    "tree": {
+        "id": 140519517258144,
+        "N": 1000,
+        "V": 0.5,
+        "U": 0.2,
+        "prob": 0.3,
+        "is_best_path": true,
+        "children": [
+        {
+            "id": 140519517258400,
+            "N": 500,
+            "V": 0.6,
+            "U": 0.1,
+            "prob": 0.4,
+            "is_best_path": true,
+            "action": [2, 3],
+            "children": null
+        },
+        // More child nodes...
+        ]
+    }
+    }
+    ```
+
+#### Implementation
+
+Here's the implementation of the `/get_mcts_tree` endpoint:
+
+```python
+# Endpoint to get MCTS tree data
+@app.get("/get_mcts_tree")
+def get_mcts_tree(max_depth: int = 3):
+    global last_mytree
+    if last_mytree is None:
+        print("No MCTS tree available")  # Debug log
+        return {"tree": None}
+    try:
+        tree_data = extract_mcts_tree_data(last_mytree, max_depth=max_depth)  # Limit depth to 3
+        return {"tree": tree_data}
+    except Exception as e:
+        print(f"Error serializing MCTS tree: {e}")  # Debug log
+        return {"tree": None}
+```
+
+### **Get MCTS Subtree (`/get_mcts_subtree`)**
+
+#### Purpose and Functionality
+
+The `/get_mcts_subtree` endpoint retrieves a specific subtree from the MCTS tree based on a node ID. This allows for targeted analysis of particular branches within the tree.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    Accepts two query parameters: `node_id` (the unique identifier of the node) and `max_depth` (optional, defaults to 2).
+    ```bash
+    GET /get_mcts_subtree?node_id=140519517258144&max_depth=2
+    ```
+
+-   **Response Model:**\
+    Returns the specified subtree or an error if the node is not found.
+    ```json
+    {
+    "tree": {
+        "id": 140519517258400,
+        "N": 500,
+        "V": 0.6,
+        "U": 0.1,
+        "prob": 0.4,
+        "is_best_path": true,
+        "children": null
+    },
+    "error": null
+    }
+    ```
+
+#### Implementation
+
+Here's the implementation of the `/get_mcts_subtree` endpoint:
+
+```python
+@app.get("/get_mcts_subtree")
+def get_mcts_subtree(node_id: int, max_depth: int = 2):
+    global last_mytree
+    if last_mytree is None:
+        print("No MCTS tree available")  # Debug log
+        return {"tree": None}
+    try:
+        # Get best_path_ids from the root
+        best_path_ids = get_best_path_ids(last_mytree)
+        subtree = extract_node_by_id(last_mytree, node_id, max_depth=max_depth, best_path_ids=best_path_ids)
+        if subtree is None:
+            return {"tree": None, "error": "Node not found"}
+        return {"tree": subtree}
+    except Exception as e:
+        print(f"Error serializing MCTS subtree: {e}")  # Debug log
+        return {"tree": None}
+```
+
+### **Get MCTS Summary (`/get_mcts_summary`)**
+
+#### Purpose and Functionality
+
+The `/get_mcts_summary` endpoint provides a summary of the MCTS tree, including metrics such as the total number of nodes, average visit count, and average value. This summary offers a high-level overview of the AI's exploration during the game.
+
+#### Request and Response Models
+
+-   **Request Model:**\
+    This endpoint does not require any input parameters.
+
+-   **Response Model:**\
+    Returns a JSON object containing summary metrics of the MCTS tree.
+    ```json
+    {
+    "summary": {
+        "total_nodes": 1500,
+        "average_N": 1.0,
+        "average_V": 0.5
+    }
+    }
+    ```
+
+#### Implementation
+
+Here's the implementation of the `/get_mcts_summary` endpoint:
+
+```python
+@app.get("/get_mcts_summary")
+def get_mcts_summary():
+    global last_mytree
+    if last_mytree is None:
+        return {"summary": None}
+    return {"summary": summarize_mcts_tree(last_mytree)}
+```
+
+### **Summary**
+
+In this section, we've built a series of RESTful endpoints that form the backbone of our FastAPI backend. These endpoints handle various aspects of the game, from initializing a new game and making moves to integrating the AI's decision-making process and providing insights into the MCTS algorithm. By structuring our backend in this manner, we ensure a clear separation of concerns, making the system scalable, maintainable, and easy to interact with from the frontend.
+
+In the next section, we'll delve into integrating the trained AlphaZero model with our backend, enabling intelligent AI gameplay and seamless user interactions.
+
+---
+
+## 4. **Integrating the Trained AlphaZero Model**
+
+Integrating the trained AlphaZero model with our FastAPI backend is a pivotal step in enabling intelligent AI gameplay. 
+
+This integration allows our AI to make strategic decisions based on the current game state, leveraging the power of Monte Carlo Tree Search (MCTS) guided by the neural network. 
+
+In this section, we'll explore how to load the trained policy model, connect it with the MCTS algorithm, and manage model inference within our API endpoints.
+
+### **Loading the Trained Policy Model**
+
+#### Purpose and Functionality
+
+The trained policy model is the brain of our AI agent. It predicts the probabilities of making specific moves and evaluates the current game state to determine the likelihood of winning. 
+
+#### Implementation
+
+In our `main.py`, we use PyTorch to load the pre-trained policy model (`6-6-4-pie.policy`). Here's how it's done:
+
+```python
+# Load the policy
+game = ConnectN(**game_setting)
+policy = Policy(game)
+# Load the saved model (adjust the path if necessary)
+challenge_policy = torch.load('6-6-4-pie.policy')
+```
+
+### **Connecting the Policy Network with MCTS**
+
+#### Purpose and Functionality
+
+Monte Carlo Tree Search (MCTS) is an algorithm that explores possible moves and outcomes to make optimal decisions. By integrating the policy network with MCTS, we enhance the AI's ability to prioritize promising moves and evaluate game states more effectively, reducing the computational overhead of extensive simulations.
+
+#### Implementation
+
+The connection between the policy network and MCTS is established through the `Challenge_Player_MCTS` function. This function utilizes the policy network to guide the MCTS simulations.
+
+```python
+# Function for the AI to select a move using MCTS
+def Challenge_Player_MCTS(game):
+    mytree = MCTS.Node(copy(game))
+    for _ in range(1000):
+        mytree.explore(challenge_policy)
+       
+    mytreenext, (v, nn_v, p, nn_p) = mytree.next(temperature=0.1)
+    
+    return mytreenext.game.last_move, mytree  # Now returns the move and MCTS root
+```
+
+**Explanation:**
+
+1.  **Creating the MCTS Root Node:**
+    -   We create a new MCTS tree node based on the current game state. The `copy(game)` ensures that the original game state remains unaltered during simulations.
+
+2.  **Running MCTS Simulations:**
+    -   We perform 1,000 MCTS simulations. Each simulation explores possible moves and outcomes, guided by the policy network (`challenge_policy`), which helps prioritize more promising branches of the game tree.
+
+3.  **Selecting the Best Move:**
+    -   After the simulations, we select the next move based on the visit counts of the child nodes. The `temperature` parameter controls the exploration-exploitation balance; a lower temperature favors more deterministic moves.
+
+4.  **Returning the Move and Updated Tree:**
+    -   The function returns the selected move and the updated MCTS tree (`mytree`) for potential visualization or further analysis.
+
+### **Managing Model Inference within Endpoints**
+
+#### Purpose and Functionality
+
+Model inference involves using the trained policy network to make predictions based on the current game state. Managing this inference efficiently within our API endpoints ensures that the AI can respond to player moves in real-time, providing a seamless gaming experience.
+
+#### Implementation
+
+Model inference is primarily handled within the `/ai_move` and `/ai_probability` endpoints, which we have discussed above.
+
+---
+
+## 5. **Conclusion**
+
+### Summary of Backend Development
+
+In **Part 2** of our blog series, we successfully developed the backend for our AlphaZero-inspired Tic-Tac-Toe application using **FastAPI**. Here's a quick recap of what we accomplished:
+
+1. **Installed Required Dependencies:**  
+   We set up a virtual environment and installed all necessary Python packages, including FastAPI, Uvicorn, NumPy, Pydantic, and PyTorch, ensuring our backend environment was ready for development.
+
+2. **Defined Project Structure:**  
+   We organized our backend directory to promote modularity and maintainability, separating game logic, MCTS algorithms, policy networks, and original development notebooks into distinct files and folders.
+
+3. **Built RESTful Endpoints:**  
+   We created several essential API endpoints to manage game sessions and interactions:
+   - **`/start_game`:** Initializes a new game and sets the active player.
+   - **`/make_move`:** Allows players to make moves and updates the game state.
+   - **`/ai_move`:** Enables the AI to make strategic moves using MCTS.
+   - **`/get_board`:** Retrieves the current state of the game board.
+   - **`/ai_probability`:** Provides the AI's probability of winning from the current game state.
+   - **MCTS Tree Endpoints (`/get_mcts_tree`, `/get_mcts_subtree`, `/get_mcts_summary`):** Offer insights into the AI's decision-making process by exposing the internal MCTS tree structure and summaries.
+
+4. **Integrated the Trained AlphaZero Model:**  
+   We loaded the pre-trained policy network and connected it with the MCTS algorithm, enabling our AI to make informed and strategic decisions during gameplay. This integration ensures that the AI can evaluate the game state effectively and choose optimal moves in real-time.
+
+By completing these steps, we've laid a strong foundation for our backend, making it capable of handling game logic, AI decisions, and providing a seamless interface for the frontend to interact with.
+
+### Transitioning to Frontend Integration in Part 3
+
+With a robust backend in place, the next logical step is to build a user-friendly frontend interface that allows players to interact with our AI-driven Tic-Tac-Toe game effortlessly. 
+
+In **Part 3** of this series, we'll focus on developing the frontend using modern web technologies. Here's what you can expect:
+
+- **Building the User Interface:**  
+  Designing an intuitive and responsive UI where users can play Tic-Tac-Toe against the AI, view the game board, and see real-time updates.
+
+- **Connecting Frontend with Backend:**  
+  Integrating the frontend with our FastAPI backend through the RESTful endpoints we developed, enabling seamless communication between the user's actions and the AI's responses.
+
+- **Enhancing User Experience:**  
+  Implementing features such as move animations, win/draw notifications, and interactive elements to make the gameplay engaging and enjoyable.
+
+By bridging the backend with a dynamic frontend, we'll create a complete and interactive Tic-Tac-Toe application that users can enjoy without any technical hurdles.
+
+### Looking Ahead
+
+Our journey to build an AlphaZero-inspired Tic-Tac-Toe champion has been both challenging and rewarding. With a solid backend foundation, we're poised to create an engaging and intelligent game experience for users worldwide. As we move forward to **Part 3**, developing the frontend interface will bring our AI-driven game to life, making it accessible and enjoyable for everyone.
+
+Stay tuned for the next installment, where we'll dive into frontend development, creating an interactive and user-friendly interface that connects seamlessly with our powerful FastAPI backend. Together, we'll continue to enhance and expand our Tic-Tac-Toe application, pushing the boundaries of what's possible with AI and web development.
+
+---
+
+**Codes**: <Link href="https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App" target="_blank" rel="noopener noreferrer">Check the Github Repo for the full code</Link>
+
+*Happy Coding!*
+
+<Link href="/blogs" target="_blank">🔙 Back to all blogs</Link> | <Link href="/" target="_blank">🏠 Home Page</Link>
+
+--- 
+
+## About the Author
+
+<div className="flex justify-center items-center w-full">
+  <Link href="/">
+    <Image
+        src="/images/dp/dp3.jpg"
+        alt="Sagarnil Das"
+        width={300}
+        height={300}
+        className="rounded-full"
+    />
+  </Link>
+</div>
+
+### Sagarnil Das
+
+<Link href="/">Sagarnil Das</Link> is a seasoned AI enthusiast with over 12 years of experience in Machine Learning and Deep Learning. 
+
+He has built scalable AI ecosystems for global giants like the NHS and developed innovative mental health applications that detect emotions and suicidal tendencies.  
+
+Some of his other accomplishments includes: 
+
+-  **Ex-NASA researcher**
+-  **Ex-Udacity Mentor**
+-  **Intel Edge AI scholarship winner**
+-  **Kaggle Notebooks expert**
+
+When he's not immersed in data or crafting AI models, Sagarnil enjoys playing the guitar and doing street photography. 
+
+An avid Dream Theater fan, he believes in blending logic with creativity to solve complex problems.
+
+<Link href="/about">You can find out more about Sagarnil here.</Link>
+
+To contact him regarding any guidance, questions, feedbacks or challenges, you can contact him by clicking the chat icon on the bottom right of the screen.
+
+**Connect with Sagarnil:**
+
+<div className="flex space-x-4 justify-center mt-4">
+  <Link href="https://www.linkedin.com/in/sagarnildas/" target="_blank" rel="noopener noreferrer">
+    LinkedIn
+  </Link>
+  <Link href="https://github.com/sagarnildass/" target="_blank" rel="noopener noreferrer">
+    GitHub
+  </Link>
+  <Link href="https://x.com/sagarnildas03" target="_blank" rel="noopener noreferrer">
+    Twitter
+  </Link>
+</div>

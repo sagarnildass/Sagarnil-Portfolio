@@ -78,10 +78,10 @@ As you can see, the game provides feedback on correct and incorrect guesses, hel
 
 Creating an AI to play Hangman might seem trivial at first glance, but it presents a unique set of challenges that make it an excellent project for exploring advanced machine learning concepts. Here's why building a Hangman AI is beneficial:
 
-1.  **Understanding <a href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank">Reinforcement Learning</a>:** Hangman is an environment where an agent can learn through trial and error, making it a perfect candidate for applying RL techniques.
-2.  **Sequential Decision Making:** The AI must make a series of decisions (guesses) based on the evolving state of the game, which is ideal for training <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank">recurrent neural networks</a>.
-3.  **Curriculum Learning Application:** By progressively increasing the difficulty of the words, we can effectively train the AI to handle more complex scenarios using <a href="https://en.wikipedia.org/wiki/Curriculum_learning" target="_blank">Curriculum Learning</a>.
-4.  **Practical Implementation:** Building this AI provides hands-on experience with setting up environments, defining action and observation spaces, and integrating <a href="https://stable-baselines3.readthedocs.io/en/master/" target="_blank">RL algorithms</a>.
+1.  **Understanding <Link href="https://en.wikipedia.org/wiki/Reinforcement_learning" target="_blank" rel="noopener noreferrer">Reinforcement Learning</Link>:** Hangman is an environment where an agent can learn through trial and error, making it a perfect candidate for applying RL techniques.
+2.  **Sequential Decision Making:** The AI must make a series of decisions (guesses) based on the evolving state of the game, which is ideal for training <Link href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank" rel="noopener noreferrer">recurrent neural networks</Link>.
+3.  **Curriculum Learning Application:** By progressively increasing the difficulty of the words, we can effectively train the AI to handle more complex scenarios using <Link href="https://en.wikipedia.org/wiki/Curriculum_learning" target="_blank" rel="noopener noreferrer">Curriculum Learning</Link>.
+4.  **Practical Implementation:** Building this AI provides hands-on experience with setting up environments, defining action and observation spaces, and integrating <Link href="https://stable-baselines3.readthedocs.io/en/master/" target="_blank" rel="noopener noreferrer">RL algorithms</Link>.
 
 Moreover, Hangman serves as a microcosm for many real-world applications where sequential decision-making and adaptive strategies are crucial, such as game playing, natural language processing, and interactive systems.
 
@@ -92,16 +92,16 @@ Reinforcement Learning is a subset of machine learning where an agent learns to 
 **Key Components of RL:**
 
 -   **Agent:** The agent is the learner or decision-maker that interacts with the environment. In our Hangman AI project, the agent represents the AI player attempting to guess the hidden word.
--   **Environment:** The environment encompasses everything the agent interacts with. It provides the context within which the agent operates, including the rules of the game and the state of the game at any given time. Learn more about environments in <a href="https://gymnasium.farama.org/" target="_blank">Gymnasium</a>.
+-   **Environment:** The environment encompasses everything the agent interacts with. It provides the context within which the agent operates, including the rules of the game and the state of the game at any given time. Learn more about environments in <Link href="https://gymnasium.farama.org/" target="_blank" rel="noopener noreferrer">Gymnasium</Link>.
 -   **Actions:** The set of all possible moves the agent can make (guessing a letter).
 -   **Rewards:** Feedback from the environment based on the agent's actions (e.g., correct guess, incorrect guess).
 
 <Image src={ReinforcementLearning} alt="Reinforcement Learning" />
 
 
-**Proximal Policy Optimization (<a href="https://arxiv.org/abs/1707.06347" target="_blank">PPO</a>):** PPO is a popular policy-based RL algorithm known for its simplicity and effectiveness. It strikes a balance between exploration and exploitation by updating the policy in a way that avoids large deviations from the previous policy, ensuring stable and reliable learning.
+**Proximal Policy Optimization (<Link href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener noreferrer">PPO</Link>):** PPO is a popular policy-based RL algorithm known for its simplicity and effectiveness. It strikes a balance between exploration and exploitation by updating the policy in a way that avoids large deviations from the previous policy, ensuring stable and reliable learning.
 
-**Recurrent PPO:** When dealing with environments that have temporal dependencies or require memory of past states, integrating <a href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank">recurrent neural networks</a> (like <a href="https://en.wikipedia.org/wiki/Long_short-term_memory" target="_blank">LSTMs</a>) into PPO can significantly enhance performance. Recurrent PPO allows the agent to maintain an internal state, enabling it to make informed decisions based on the history of interactions.
+**Recurrent PPO:** When dealing with environments that have temporal dependencies or require memory of past states, integrating <Link href="https://en.wikipedia.org/wiki/Recurrent_neural_network" target="_blank" rel="noopener noreferrer">recurrent neural networks</Link> (like <Link href="https://en.wikipedia.org/wiki/Long_short-term_memory" target="_blank" rel="noopener noreferrer">LSTMs</Link>) into PPO can significantly enhance performance. Recurrent PPO allows the agent to maintain an internal state, enabling it to make informed decisions based on the history of interactions.
 
 ### 1.4 Benefits of Curriculum Learning in AI Training
 
@@ -125,7 +125,11 @@ Throughout the blog, I'll provide detailed code examples, explanations, and insi
 2 - Background and Prerequisites
 ----------------------------
 
-Before diving into the implementation of the Hangman AI, it's essential to establish a solid understanding of the foundational concepts that underpin this project. In this section, I'll elucidate the key principles of Reinforcement Learning (RL), delve into the specifics of Recurrent Proximal Policy Optimization (Recurrent PPO), and explore the role of Curriculum Learning in machine learning. Grasping these concepts will not only aid in comprehending the subsequent sections but also provide valuable insights into the mechanics of training intelligent agents.
+Before diving into the implementation of the Hangman AI, it's essential to establish a solid understanding of the foundational concepts that underpin this project. 
+
+In this section, I'll elucidate the key principles of Reinforcement Learning (RL), delve into the specifics of Recurrent Proximal Policy Optimization (Recurrent PPO), and explore the role of Curriculum Learning in machine learning. 
+
+Grasping these concepts will not only aid in comprehending the subsequent sections but also provide valuable insights into the mechanics of training intelligent agents.
 
 ### 2.1. Understanding Reinforcement Learning (RL)
 
@@ -288,11 +292,11 @@ Before we dive into coding, it's crucial to ensure that our development environm
 
 #### 3.1.1. Installing Gymnasium, Stable Baselines3, and SB3-Contrib
 
-**<a href="https://gymnasium.farama.org/" target="_blank">Gymnasium</a>** is a toolkit for developing and comparing reinforcement learning algorithms. It provides a wide range of environments, including our custom Hangman environment, facilitating standardized interactions between the agent and the environment.
+**<Link href="https://gymnasium.farama.org/" target="_blank" rel="noopener noreferrer">Gymnasium</Link>** is a toolkit for developing and comparing reinforcement learning algorithms. It provides a wide range of environments, including our custom Hangman environment, facilitating standardized interactions between the agent and the environment.
 
-**<a href="https://stable-baselines3.readthedocs.io/en/master/" target="_blank">Stable Baselines3</a>** is a set of reliable implementations of reinforcement learning algorithms in Python. It offers a user-friendly interface and integrates seamlessly with Gymnasium environments.
+**<Link href="https://stable-baselines3.readthedocs.io/en/master/" target="_blank" rel="noopener noreferrer">Stable Baselines3</Link>** is a set of reliable implementations of reinforcement learning algorithms in Python. It offers a user-friendly interface and integrates seamlessly with Gymnasium environments.
 
-**<a href="https://github.com/Stable-Baselines-Team/stable-baselines3-contrib" target="_blank">SB3-Contrib</a>** extends Stable Baselines3 by adding experimental and less commonly used algorithms, including Recurrent PPO, which is essential for our project.
+**<Link href="https://github.com/Stable-Baselines-Team/stable-baselines3-contrib" target="_blank" rel="noopener noreferrer">SB3-Contrib</Link>** extends Stable Baselines3 by adding experimental and less commonly used algorithms, including Recurrent PPO, which is essential for our project.
 
 To install these libraries, follow the steps below:
 
@@ -493,7 +497,7 @@ Gymnasium (formerly Gym) is a toolkit for developing and comparing reinforcement
 
 In reinforcement learning, **action spaces** and **observation spaces** define the set of possible actions an agent can take and the information it receives from the environment, respectively.
 
--   **Action Space:** For Hangman, the actions correspond to guessing letters from the English alphabet. Since there are 26 letters, the action space is discrete with 26 possible actions. Learn more about action spaces in <a href="https://gymnasium.farama.org/api/spaces/" target="_blank">Gymnasium Spaces</a>.
+-   **Action Space:** For Hangman, the actions correspond to guessing letters from the English alphabet. Since there are 26 letters, the action space is discrete with 26 possible actions. Learn more about action spaces in <Link href="https://gymnasium.farama.org/api/spaces/" target="_blank">Gymnasium Spaces</Link>.
 
 -   **Observation Space:** The observation should encapsulate all necessary information for the agent to make informed decisions. For Hangman, this includes:
     
@@ -1295,7 +1299,7 @@ Selecting the appropriate policy architecture is crucial for the success of our 
 
 #### 5.1.1. MlpLstmPolicy Explained
 
-**<a href="https://stable-baselines.readthedocs.io/en/master/modules/policies.html#stable_baselines.common.policies.MlpLstmPolicy" target="_blank">MlpLstmPolicy</a>** is a policy architecture that combines Multi-Layer Perceptrons (MLPs) with Long Short-Term Memory (<a href="https://en.wikipedia.org/wiki/Long_short-term_memory" target="_blank">LSTM</a>) networks. This hybrid approach leverages the strengths of both architectures to handle complex, sequential decision-making tasks effectively.
+**<Link href="https://stable-baselines.readthedocs.io/en/master/modules/policies.html#stable_baselines.common.policies.MlpLstmPolicy" target="_blank" rel="noopener noreferrer">MlpLstmPolicy</Link>** is a policy architecture that combines Multi-Layer Perceptrons (MLPs) with Long Short-Term Memory (<Link href="https://en.wikipedia.org/wiki/Long_short-term_memory" target="_blank" rel="noopener noreferrer">LSTM</Link>) networks. This hybrid approach leverages the strengths of both architectures to handle complex, sequential decision-making tasks effectively.
 
 -   **Multi-Layer Perceptron (MLP):** An MLP is a class of feedforward artificial neural network that consists of multiple layers of nodes, each fully connected to the next layer. MLPs are excellent for capturing nonlinear relationships in data and are widely used in various machine learning tasks.
 
@@ -1833,7 +1837,7 @@ To comprehensively evaluate our Hangman AI, we must establish clear and relevant
 #### 6.1.1. Win Rate and Efficiency
 
 - **Win Rate:** Provides a direct measure of the agent's ability to solve the game under varying conditions.
-- **Efficiency:** Highlights the agent's ability to optimize its guessing strategy, reducing the number of unnecessary attempts. Learn more about performance metrics in <a href="https://en.wikipedia.org/wiki/Performance_measurement" target="_blank">Performance Measurement</a>.
+- **Efficiency:** Highlights the agent's ability to optimize its guessing strategy, reducing the number of unnecessary attempts. Learn more about performance metrics in <Link href="https://en.wikipedia.org/wiki/Performance_measurement" target="_blank">Performance Measurement</Link>.
 
 **Calculating Win Rate and Efficiency:**
 
@@ -2184,7 +2188,7 @@ While the Hangman AI developed in this project demonstrates impressive capabilit
 
 Ready to dive deeper? Access the complete source code, detailed documentation, and ongoing updates on our GitHub repository. Whether you're looking to experiment with the AI, contribute to its development, or adapt it for your unique applications, the repository is your gateway to all things Hangman AI.
 
-<a href="https://github.com/sagarnildass/Hangman-PPO-LSTM" target="_blank">**Check out the Hangman PPO LSTM GitHub Repository**</a>
+<Link href="https://github.com/sagarnildass/Hangman-PPO-LSTM" target="_blank" rel="noopener noreferrer">**Check out the Hangman PPO LSTM GitHub Repository**</Link>
 
 Thank you for following along! We hope this project has enriched your understanding of Reinforcement Learning and inspired you to embark on your own AI adventures. Feel free to reach out with questions, feedback, or contributions---let's continue building intelligent systems together.
 
@@ -2193,3 +2197,54 @@ Thank you for following along! We hope this project has enriched your understand
 *Happy Coding!*
 
 <Link href="/blogs">🔙 Back to all blogs</Link> | <Link href="/">🏠 Home Page</Link>
+
+--- 
+
+## About the Author
+
+<div className="flex justify-center items-center w-full">
+  <Link href="/">
+    <Image
+        src="/images/dp/dp3.jpg"
+        alt="Sagarnil Das"
+        width={300}
+        height={300}
+        className="rounded-full"
+    />
+  </Link>
+</div>
+
+### Sagarnil Das
+
+<Link href="/">Sagarnil Das</Link> is a seasoned AI enthusiast with over 12 years of experience in Machine Learning and Deep Learning. 
+
+He has built scalable AI ecosystems for global giants like the NHS and developed innovative mental health applications that detect emotions and suicidal tendencies.  
+
+Some of his other accomplishments includes: 
+
+-  **Ex-NASA researcher**
+-  **Ex-Udacity Mentor**
+-  **Intel Edge AI scholarship winner**
+-  **Kaggle Notebooks expert**
+
+When he's not immersed in data or crafting AI models, Sagarnil enjoys playing the guitar and doing street photography. 
+
+An avid Dream Theater fan, he believes in blending logic with creativity to solve complex problems.
+
+<Link href="/about">You can find out more about Sagarnil here.</Link>
+
+To contact him regarding any guidance, questions, feedbacks or challenges, you can contact him by clicking the chat icon on the bottom right of the screen.
+
+**Connect with Sagarnil:**
+
+<div className="flex space-x-4 justify-center mt-4">
+  <Link href="https://www.linkedin.com/in/sagarnildas/" target="_blank" rel="noopener noreferrer">
+    LinkedIn
+  </Link>
+  <Link href="https://github.com/sagarnildass/" target="_blank" rel="noopener noreferrer">
+    GitHub
+  </Link>
+  <Link href="https://x.com/sagarnildas03" target="_blank" rel="noopener noreferrer">
+    Twitter
+  </Link>
+</div>

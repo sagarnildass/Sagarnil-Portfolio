@@ -61,7 +61,7 @@ export const Footer = () => {
             <a
               key={`footer-link-${idx}`}
               href={socialLink.link}
-              className="text-zinc-500 text-sm relative"
+              className="text-cyan-500 text-sm relative"
               target="__blank"
               aria-label={socialLink.name}
             >
