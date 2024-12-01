@@ -11,10 +11,10 @@ export const Timeline = () => {
       </div>
       {timeline.map((item: any, idx: number) => (
         <div key={`timeline-item-${idx}`} className="border-b border-zinc-800">
-          <h1 className="text-xl font-bold text-zinc-200 my-8 relative">
+          <h2 className="text-xl font-bold text-zinc-200 my-8 relative">
             <div className="h-3 md:h-4 w-3 md:w-4 border-2 border-cyan-500 bg-zinc-800 rounded-full absolute -left-[20px] md:-left-[46px] top-2 md:top-1" />
             {item.year}
-          </h1>
+          </h2>
 
           <div className="mb-8">
             {item.points.map((point: any, idx: number) => (

@@ -31,18 +31,18 @@ export default function Home({
     <Container>
       <Hero />
       <Experience />
-      <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
+      <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
         Here are some kind words from some exceptional people.
-      </h1>
+      </h2>
       <AnimatedTestimonials testimonials={testimonials} autoplay />
-      <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
+      <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
         I've been building a lot of things
-      </h1>
+      </h2>
 
       <Projects />
-      <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8 mt-40">
+      <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8 mt-40">
         Latest contributions to open source
-      </h1>
+      </h2>
       <LatestRepos repos={repos.slice(0, 9)} showMore={shouldShowMore()} />
 
       <div className="max-w-5xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-40 ">

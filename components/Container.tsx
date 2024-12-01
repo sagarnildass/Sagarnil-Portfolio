@@ -56,7 +56,7 @@ export const Container: React.FC<ContainerProps> = ({
         {/* Open Graph / Facebook */}
         <meta
           property="og:url"
-          content={`https://sagarnildas.com${router.asPath}`}
+          content={`https://www.sagarnildas.com${router.asPath}`}
         />
         <link
           rel="canonical"

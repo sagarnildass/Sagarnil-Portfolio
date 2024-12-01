@@ -14,9 +14,9 @@ export const Experience = () => {
   );
   return (
     <div className=" max-w-5xl mx-auto px-8">
-      <h1 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto mt-20 md:mt-40">
+      <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto mt-20 md:mt-40">
         Work Experience
-      </h1>
+      </h2>
       <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-4 leading-loose tracking-wide ">
         I have worked with multiple Fortune 500 companies and leading tech startups.
       </p>
@@ -89,12 +89,12 @@ export const Experience = () => {
                 }}
                 layoutId={activeWorkExperience?.company}
               >
-                <h1 className="text-2xl font-bold text-zinc-100">
+                <h2 className="text-2xl font-bold text-zinc-100">
                   {activeWorkExperience?.role}{" "}
                   <span className="text-cyan-500">
                     @ {activeWorkExperience?.company}
                   </span>
-                </h1>
+                </h2>
 
                 <div className="text-zinc-300 text-sm tracking-widest">
                   {moment(activeWorkExperience?.startDate).format("MMM YYYY")} -{" "}

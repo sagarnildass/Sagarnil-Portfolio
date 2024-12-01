@@ -38,7 +38,7 @@ export default function ProjectsPage() {
       meta={{
         title: "About Me | Sagarnil Das",
         description:
-          "Discover more about Sagarnil Das, a Machine Learning and Deep Learning Engineer with over 12 years of experience. Explore his journey, interests, and professional accomplishments.",
+          "Learn about Sagarnil Das, a Machine Learning expert with 12+ years of experience. Explore his journey, interests, and accomplishments.",
         image: "/images/avatar.jpeg", // Update with a specific image if needed
         type: "website",
       }}

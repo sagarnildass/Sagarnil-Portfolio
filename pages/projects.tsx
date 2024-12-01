@@ -6,7 +6,7 @@ export default function ProjectsPage() {
     <Container
       meta={{
         title: "Projects | Sagarnil Das",
-        description: "Explore the projects by Sagarnil Das, a Machine Learning and Deep Learning Engineer.",
+        description: "Discover the projects of Sagarnil Das, showcasing expertise in Machine Learning, Deep Learning, and AI-powered solutions to real-world challenges.",
         image: "/images/projects/mind_matters.png",
         type: "website",
       }}
