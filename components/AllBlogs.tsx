@@ -48,7 +48,7 @@ function Blog({ article, hoveredIndex, setHoveredIndex, idx }: any) {
 
       {/* Blog Details */}
       <div className="relative z-10 mt-4 md:mt-6">
-        <small className="text-zinc-500 block">{formatDate(article.date)}</small>
+        <small className="text-zinc-300 block">{formatDate(article.date)}</small>
         <h2 className="text-zinc-200 font-bold text-2xl mt-2">{article.title}</h2>
         <p className="text-zinc-300 font-normal text-base mt-4 leading-relaxed max-w-4xl">
           {article.description}
