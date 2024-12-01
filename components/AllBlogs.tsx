@@ -1,10 +1,9 @@
-// components/AllBlogs.tsx
-
 import { formatDate } from "@/lib/formatDate";
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import Image from "next/image"; // Import Image
+import Image from "next/image";
+import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
 
 function Blog({ article, hoveredIndex, setHoveredIndex, idx }: any) {
   return (
@@ -42,19 +41,15 @@ function Blog({ article, hoveredIndex, setHoveredIndex, idx }: any) {
             alt={`Thumbnail for ${article.title}`}
             fill
             className="object-cover rounded-lg"
-            priority={false} // Set to true if you want to prioritize loading
+            priority={false}
           />
         </div>
       )}
 
       {/* Blog Details */}
       <div className="relative z-10 mt-4 md:mt-6">
-        <small className="text-zinc-500 block">
-          {formatDate(article.date)}
-        </small>
-        <h2 className="text-zinc-200 font-bold text-2xl mt-2">
-          {article.title}
-        </h2>
+        <small className="text-zinc-500 block">{formatDate(article.date)}</small>
+        <h2 className="text-zinc-200 font-bold text-2xl mt-2">{article.title}</h2>
         <p className="text-zinc-300 font-normal text-base mt-4 leading-relaxed max-w-4xl">
           {article.description}
         </p>
@@ -64,12 +59,37 @@ function Blog({ article, hoveredIndex, setHoveredIndex, idx }: any) {
   );
 }
 
-export default function AllBlogs({ blogs }: any) {
+export default function AllBlogs({
+  blogs,
+  isPreview = false,
+}: {
+  blogs: any[];
+  isPreview?: boolean;
+}) {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  return (
-    <div>
+
+  // Pagination State
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const blogsPerPage = 4;
+  const totalPages = Math.ceil(blogs.length / blogsPerPage);
+  const indexOfLastBlog = currentPage * blogsPerPage;
+  const indexOfFirstBlog = indexOfLastBlog - blogsPerPage;
+  const currentBlogs = blogs.slice(indexOfFirstBlog, indexOfLastBlog);
+
+  // Handlers
+  const handleNextPage = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+  };
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+  };
+
+  // If in preview mode, show only the last 2 blogs
+  if (isPreview) {
+    const latestBlogs = blogs.slice(-2);
+    return (
       <div className="flex flex-col space-y-16">
-        {blogs.map((article: any, idx: number) => (
+        {latestBlogs.map((article, idx) => (
           <Blog
             key={article.slug}
             article={article}
@@ -78,6 +98,50 @@ export default function AllBlogs({ blogs }: any) {
             setHoveredIndex={setHoveredIndex}
           />
         ))}
+      </div>
+    );
+  }
+
+  // Full list with pagination
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="flex flex-col space-y-16">
+        {currentBlogs.map((article, idx) => (
+          <Blog
+            key={article.slug}
+            article={article}
+            idx={idx}
+            hoveredIndex={hoveredIndex}
+            setHoveredIndex={setHoveredIndex}
+          />
+        ))}
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center items-center mt-12 space-x-4">
+        <button
+          onClick={handlePrevPage}
+          disabled={currentPage === 1}
+          className={`p-2 rounded-full bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600 transition-colors duration-200 ${
+            currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <IconArrowLeft className="h-6 w-6 text-gray-800 dark:text-neutral-300" />
+        </button>
+
+        <span className="text-zinc-300 dark:text-neutral-300">
+          Page {currentPage} of {totalPages}
+        </span>
+
+        <button
+          onClick={handleNextPage}
+          disabled={currentPage === totalPages}
+          className={`p-2 rounded-full bg-gray-200 dark:bg-neutral-700 hover:bg-gray-300 dark:hover:bg-neutral-600 transition-colors duration-200 ${
+            currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <IconArrowRight className="h-6 w-6 text-gray-800 dark:text-neutral-300" />
+        </button>
       </div>
     </div>
   );

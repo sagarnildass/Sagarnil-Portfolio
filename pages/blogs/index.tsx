@@ -1,6 +1,7 @@
 import { getAllBlogs } from "@/lib/getAllBlogs";
 import { Container } from "@/components/Container";
 import AllBlogs from "@/components/AllBlogs";
+import Link from "next/link";
 
 export default function BlogsPage({ blogs }: any) {
   return (
@@ -35,9 +36,20 @@ export default function BlogsPage({ blogs }: any) {
             they offer real, tangible knowledge that someone can use. That’s
             what matters. Real value. Real impact. No fluffs. Just a shared love
             for the craft.
+            <br></br>
+            <br></br>{" "}
+            <Link
+              href="/contributions"
+              className="text-cyan-500 text-sm md:text-base max-w-2xl leading-loose tracking-wide hover:underline"
+            >
+              You can find all my Github Repositories here.
+            </Link>
           </p>
         </div>
         <div className="mt-20">
+          <h2 className="font-bold text-2xl md:text-4xl md:leading-tight text-zinc-50 max-w-3xl">
+            Recent Blogs
+          </h2>
           <AllBlogs blogs={blogs} />
         </div>
       </div>

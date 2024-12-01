@@ -3,6 +3,7 @@ import { Projects } from "@/components/Projects";
 import { Timeline } from "@/components/Timeline";
 import { user } from "@/constants/user";
 import Image from "next/image";
+import Link from "next/link"; // Import Link component
 import {
   AiOutlineGithub,
   AiOutlineLinkedin,
@@ -55,11 +56,14 @@ export default function ProjectsPage() {
             school, I was on the cricket field chasing dreams (and cricket
             balls). Fast forward to college, I discovered my love for
             music—singing my heart out and strumming away on my guitar became my
-            creative escape. I became a ape-shit crazy fan of Dream Theater.
+            creative escape. I became an ape-shit crazy fan of Dream Theater.
           </p>
           <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
-            It wasn’t until 2013 that I stumbled into the world of coding, and
-            let’s just say, it was love at first debug. Now, I’m a machine
+            It wasn’t until 2013 that{" "}
+            <Link href="/contributions" className="text-cyan-500 text-sm md:text-base max-w-2xl leading-loose tracking-wide hover:underline">
+              I stumbled into the world of coding
+            </Link>
+            , and let’s just say, it was love at first debug. Now, I’m a machine
             learning mad-hatter blending logic and creativity to solve complex
             problems.
           </p>
@@ -93,11 +97,14 @@ export default function ProjectsPage() {
       <div className="max-w-5xl mx-auto px-8 mt-10 relative">
         <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
           When I’m not wrangling data or building AI models, you’ll find me
-          jamming on my guitar or reminiscing about my cricket days. Who says
-          you can’t mix algorithms with melodies?
+          jamming on my guitar or{" "}
+          <Link href="/events" className="text-cyan-500 hover:underline">
+            roaming around the streets doing street photography or videography
+          </Link>
+          . Who says you can’t mix algorithms with melodies?
         </p>
         <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
-          Here's a timeline of what I've been upto
+          Here's a timeline of what I've been up to:
         </p>
         <Timeline />
       </div>

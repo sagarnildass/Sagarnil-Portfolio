@@ -3,6 +3,7 @@ import { getUserRepositories } from "@/lib/github";
 import { LatestRepos } from "@/components/LatestRepos";
 import { Repository } from "@/types/repos";
 import { user } from "@/constants/user";
+import Link from "next/link";
 
 // const inter = Inter({ subsets: ["latin"] });
 
@@ -26,18 +27,23 @@ export default function Contributions({ repos }: { repos: Repository[] }) {
           A place where you can witness my caffeinated coding adventures and see
           just how much coffee it takes to fuel my commits. from my first "Hello
           World" to my latest breakthrough, and everything in between.
+          <br></br>
+          <br></br>{" "}
+          <Link href="/projects" className="text-cyan-500 text-sm md:text-base max-w-2xl leading-loose tracking-wide hover:underline">
+            You can find more about some of my great projects here.
+          </Link>
         </p>
       </div>
       <LatestRepos repos={repos} />
 
       <div className="flex justify-center relative z-[70] ">
-        <a
+        <Link
           href={user.github}
           target="__blank"
           className="text-zinc-200 border border-zinc-600 bg-zinc-900 px-8 py-2 rounded-lg hover:border-zinc-700 hover:bg-zinc-800/[0.8] transition duration-200"
         >
           View all on GitHub
-        </a>
+        </Link>
       </div>
     </Container>
   );

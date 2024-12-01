@@ -11,7 +11,7 @@ import AllBlogs from "@/components/AllBlogs";
 import { Uses } from "@/components/Uses";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { testimonials } from "@/constants/testimonials";
-
+import Link from "next/link";
 // const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({
@@ -47,7 +47,18 @@ export default function Home({
 
       <div className="max-w-5xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-40 ">
         <div className="col-span-2">
-          <AllBlogs blogs={blogs} />
+          <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8">
+            Recent Blogs
+          </h2>
+          <AllBlogs blogs={blogs} isPreview />
+          <div className="flex justify-center relative z-[70] mt-4">
+            <Link
+              href="/blogs"
+              className="text-zinc-200 border border-zinc-600 bg-zinc-900 px-8 py-2 rounded-lg hover:border-zinc-700 hover:bg-zinc-800/[0.8] transition duration-200"
+            >
+              View All Blogs
+            </Link>
+          </div>
         </div>
         <Uses />
       </div>

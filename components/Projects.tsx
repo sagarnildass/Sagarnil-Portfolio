@@ -2,9 +2,7 @@ import { projects } from "@/constants/projects";
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import React, { useState } from "react";
-import { AiFillCode } from "react-icons/ai";
 
-import { HiOutlineCodeBracketSquare } from "react-icons/hi2";
 
 import { BsTerminal } from "react-icons/bs";
 

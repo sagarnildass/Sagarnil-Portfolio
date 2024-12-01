@@ -1,5 +1,6 @@
 import React from "react";
 import { LinkPreview } from "./LinkPreview";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -44,6 +45,11 @@ export const Hero = () => {
         >
           Atlassoft.
         </LinkPreview>{" "}
+        <br></br>
+        <br></br>
+        <Link href="/about" className="text-cyan-500 text-sm md:text-base max-w-2xl leading-loose tracking-wide hover:underline">
+          Learn more about Sagarnil's journey.
+        </Link>
       </div>
     </div>
   );
