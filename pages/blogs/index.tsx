@@ -9,7 +9,7 @@ export default function BlogsPage({ blogs }: any) {
         title: "Blogs | Sagarnil Das",
         description:
           "Explore insightful blogs by Sagarnil Das, covering topics on machine learning, deep learning, coding adventures, and much more.",
-        image: "/images/blogs-meta-image.jpeg", // Replace with an appropriate image if available
+        image: "/images/blogs/curriculum_learning.png", // Replace with an appropriate image if available
         type: "website",
       }}
     >
