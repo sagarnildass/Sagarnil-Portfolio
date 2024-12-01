@@ -1,12 +1,5 @@
-import Head from "next/head";
-
-import { formatDate } from "@/lib/formatDate";
-
 import { getAllBlogs } from "@/lib/getAllBlogs";
 import { Container } from "@/components/Container";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import Link from "next/link";
 import AllBlogs from "@/components/AllBlogs";
 
 export default function BlogsPage({ blogs }: any) {
