@@ -73,14 +73,7 @@ export const Container: React.FC<ContainerProps> = ({
         <meta name="twitter:site" content="@sagarnildas" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
-        <meta
-          name="twitter:image"
-          content={
-            (meta.image ?? "").startsWith("http")
-              ? meta.image
-              : `https://www.sagarnildas.com${meta.image}`
-          }
-        />
+        <meta name="twitter:image" content={meta.image} />
       </Head>
 
       <main className={clsx("min-h-screen antialiased bg-zinc-900", className)}>

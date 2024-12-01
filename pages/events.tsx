@@ -11,7 +11,7 @@ export default function EventsPge() {
         title: "Media and Videos | Sagarnil Das",
         description:
           "Dive into the world of media and videos by Sagarnil Das. Explore a collection of engaging content, from music performances to creative productions.",
-        image: "/images/video_thumbnails/life_flows_on_v2.webp", // Update to a relevant media-related image
+        image: "/images/video_thumbnails/life_flows_on_v2.png", // Update to a relevant media-related image
         type: "website",
       }}
     >
