@@ -47,7 +47,7 @@ export default function Home({
 
       <div className="max-w-5xl mx-auto px-8 grid grid-cols-1 lg:grid-cols-3 gap-10 mt-40 ">
         <div className="col-span-2">
-          <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8">
+          <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8 mb-4">
             Recent Blogs
           </h2>
           <AllBlogs blogs={blogs} isPreview />
