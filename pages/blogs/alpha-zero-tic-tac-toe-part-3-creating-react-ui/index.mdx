@@ -2,6 +2,10 @@ import { BlogLayout } from "@/components/BlogLayout";
 import banner from "./banner.png";
 import Image from "next/image";
 import Link from "next/link";
+import SwaggerUI from "./swaggerUI.png"
+import GameBoard from "./GameBoard.png"
+import Cards from "./Cards.png"
+import MCTSTree from "./MCTS_tree.png"
 
 export const meta = {
   author: "Sagarnil Das",
@@ -19,3 +23,1579 @@ export default (props) => <BlogLayout meta={meta} {...props} />;
   src={banner}
   alt="Training AlphaZero with Monte Carlo Tree Search: Building a Tic-Tac-Toe Champion"
 />
+
+## **Table of Contents**
+
+1. **Introduction**
+    - Recap of Part 2
+    - Objectives for Part 3
+    - Overview of Frontend Development
+
+2. **Setting Up the Frontend Environment**
+    - Installing Required Dependencies
+    - Starting the app
+
+3. **Building the User Interface**
+    - **Understanding React.js**
+    - **Game Board Component (`GameBoard.js`)**
+        - Purpose and Functionality
+        - Rendering the Board
+    - **Cell Component (`Cell.js`)**
+        - Handling User Interactions
+    - **Card Component (`Card.js`)**
+        - Displaying Game Information
+    - **MCTS Tree Visualization (`MctsTree.js` and `MctsTree.css`)**
+        - Visualizing the AI's Decision-Making Process
+    - **Main App file (`App.js`)**
+
+4. **Conclusion**
+    - Summary of Frontend Development
+    - Transitioning to Future Steps
+    - Future Enhancements and Optimizations
+
+**Codes**: <Link href="https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App" target="__blank" rel="noopener noreferrer">Check the Github Repo for the full code</Link>
+
+---
+
+## 1. **Introduction**
+
+### Recap of Part 2
+
+In **Part 2** of our blog series, titled <Link href="/blogs/alpha-zero-tic-tac-toe-part-2-creating-fastapi-app" target="__blank">*Training AlphaZero with Monte Carlo Tree Search: Part 2*</Link>, we successfully built the backend for our AlphaZero-inspired Tic-Tac-Toe application using **FastAPI**. Here's a quick recap of what we accomplished:
+
+- **Set Up FastAPI Backend:**  
+  We began by setting up a robust FastAPI backend, installing all necessary dependencies, and organizing our project structure for scalability and maintainability.
+
+- **Developed RESTful Endpoints:**  
+  We created essential API endpoints to manage game sessions and interactions, including:
+  - **`/start_game`:** Initializes a new game and sets the active player.
+  - **`/make_move`:** Allows players to make moves and updates the game state.
+  - **`/ai_move`:** Enables the AI to make strategic moves using Monte Carlo Tree Search (MCTS).
+  - **`/get_board`:** Retrieves the current state of the game board.
+  - **`/ai_probability`:** Provides the AI's probability of winning from the current game state.
+  - **MCTS Tree Endpoints:** Offer insights into the AI's decision-making process by exposing the internal MCTS tree structure and summaries.
+
+- **Integrated the Trained AlphaZero Model:**  
+  We loaded the pre-trained policy network and connected it with the MCTS algorithm, enabling our AI to make informed and strategic decisions during gameplay. This integration ensures that the AI can evaluate the game state effectively and choose optimal moves in real-time.
+
+By the end of Part 2, our backend was fully equipped to handle game logic, AI decisions, and provide a seamless interface for the frontend to interact with.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={SwaggerUI}
+    alt="FastAPI Swagger UI for Alpha Zero MCTS Tic Tac Toe"
+    width={800}
+    height={400}
+  />
+</div>
+
+If you are starting here, please stop and go back to part 1 of the series titled: <Link href="/blogs/alpha-zero-tic-tac-toe-part-1-training-the-model" target="__blank">Training AlphaZero with Monte Carlo Tree Search: Part 1</Link>. 
+
+In the first part, we trained the actual Alpha Zero Model with Monte Carlo Tree Search (MCTS) to build the superhuman AI.
+
+
+### Objectives for Part 3
+
+With a solid backend foundation laid out in Part 2, **Part 3** shifts our focus to the **frontend development** of our Tic-Tac-Toe application. The primary objectives for this part include:
+
+1. **Building the User Interface:**  
+   Designing an intuitive and responsive UI where users can play Tic-Tac-Toe against the AI, view the game board, and see real-time updates.
+
+2. **Connecting Frontend with Backend:**  
+   Integrating the frontend with our FastAPI backend through the RESTful endpoints we developed, enabling seamless communication between the user's actions and the AI's responses.
+
+3. **Enhancing User Experience:**  
+   Implementing features such as move animations, win/draw notifications, and interactive elements to make the gameplay engaging and enjoyable.
+
+4. **Visualizing AI Decision-Making:**  
+   Creating visual representations of the Monte Carlo Tree Search (MCTS) algorithm's decision-making process to provide users with insights into how the AI selects its moves.
+
+5. **Optimizing Performance and Responsiveness:**  
+   Ensuring that the frontend is optimized for fast load times and smooth interactions across various devices and screen sizes.
+
+This is how the final UI will look like.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={banner}
+    alt="Alpha Zero MCTS Tic Tac Toe React UI"
+    width={800}
+    height={400}
+  />
+</div>
+
+### Overview of Frontend Development
+
+Frontend development is the bridge between our backend's functionalities and the user's experience. In **Part 3**, we'll delve into creating a dynamic and engaging interface using modern web technologies. Here's an overview of our frontend project structure and the key components involved:
+
+```plaintext
+frontend/
+├── package.json
+├── package-lock.json
+├── postcss.config.js
+├── public
+│   ├── banner.png
+│   ├── favicon.ico
+│   ├── favicon.webp
+│   ├── index.html
+│   ├── logo192.png
+│   ├── logo512.png
+│   ├── manifest.json
+│   ├── MCTS_tree_search.png
+│   ├── play_turn.png
+│   ├── probability_winning.png
+│   └── robots.txt
+├── README.md
+├── src
+│   ├── App.css
+│   ├── App.js
+│   ├── components
+│   │   ├── Card.js
+│   │   ├── Cell.js
+│   │   ├── CustomNode.js
+│   │   ├── GameBoard.js
+│   │   ├── MctsTree.css
+│   │   └── MctsTree.js
+│   ├── index.css
+│   ├── index.js
+│   └── logo.svg
+└── tailwind.config.js
+```
+
+#### Key Frontend Components
+
+1.  **GameBoard Component (`GameBoard.js`):**
+
+    -   **Purpose:** Acts as the main interface for the Tic-Tac-Toe game, rendering the game board and managing user interactions.
+    -   **Functionality:** Displays the grid of cells, handles user clicks, and updates the game state based on backend responses.
+2.  **Cell Component (`Cell.js`):**
+
+    -   **Purpose:** Represents an individual cell on the game board.
+    -   **Functionality:** Handles user interactions such as clicks and displays the current state (Player X, Player O, or empty).
+3.  **Card Component (`Card.js`):**
+
+    -   **Purpose:** Displays game-related information, such as player statistics, current score, and game status.
+    -   **Functionality:** Provides users with real-time updates and feedback during gameplay.
+4.  **MctsTree Component (`MctsTree.js` and `MctsTree.css`):**
+
+    -   **Purpose:** Visualizes the Monte Carlo Tree Search (MCTS) algorithm's decision-making process.
+    -   **Functionality:** Renders a dynamic tree structure that shows how the AI explores different moves and selects the optimal one.
+
+
+#### Technologies and Tools
+
+-   <Link href="https://react.dev/" target="__blank" rel="noopener noreferrer">**React.js:**</Link>\
+    Utilized for building a dynamic and responsive user interface, enabling component-based architecture and efficient state management.
+
+-   <Link href="https://tailwindcss.com/" target="__blank" rel="noopener noreferrer">**Tailwind CSS:**</Link>\
+    A utility-first CSS framework that facilitates rapid UI development with pre-defined classes for styling components.
+
+-   <Link href="https://airbnb.io/visx/" target="__blank" rel="noopener noreferrer">**VisX:**</Link>\
+    A Visualization library by AirBNB used for the Tree diagram.
+
+#### Connecting Frontend with Backend
+
+Seamless communication between the frontend and backend is crucial for real-time gameplay. We'll achieve this by:
+
+-   **Making API Calls:**\
+    Using `axios` to interact with our FastAPI endpoints for game actions and AI moves.
+
+-   **Managing State:**\
+    Leveraging React's state management to keep track of the game state, player turns, and AI responses.
+
+-   **Handling Responses:**\
+    Updating the UI based on backend responses to reflect the current game status, including move updates and win/draw notifications.
+
+#### Enhancing User Experience
+
+To create an engaging and enjoyable gaming experience, we'll implement:
+
+-   **Move Animations:**\
+    Smooth transitions and animations when players make moves or when the AI responds.
+
+-   **Win/Draw Notifications:**\
+    Clear and visually appealing messages to inform users about the game's outcome.
+
+-   **Interactive Elements:**\
+    Responsive buttons, hover effects, and dynamic components to make the interface intuitive and user-friendly.
+
+## 2. **Setting Up the Frontend React Environment**
+
+Before we dive into building the user interface, it's essential to set up the frontend environment. This setup involves installing the necessary dependencies and starting the React application. Since our project is hosted on GitHub, the setup process is straightforward and can be accomplished with just a few commands. Whether you're new to React or coming from a machine learning background, this guide will walk you through each step to get your frontend up and running seamlessly.
+
+### **Prerequisites**
+
+Before setting up the frontend, ensure that you have the following installed on your machine:
+
+1. **Node.js and npm:**
+   - **Node.js** is a JavaScript runtime that allows you to run JavaScript on the server side.
+   - **npm (Node Package Manager)** is bundled with Node.js and is used to manage project dependencies.
+   
+   You can download and install Node.js (which includes npm) from <Link href="https://nodejs.org/" target="__blank" rel="noopener noreferrer">node's official website</Link>. 
+
+   To verify the installation, open your terminal and run:
+
+   ```bash
+   node -v
+   npm -v
+   ```
+
+You should see version numbers for both Node.js and npm.
+
+2.  **Git:**
+
+    -   **Git** is a version control system used to clone repositories from GitHub.
+
+    You can download and install Git from the <Link href="https://git-scm.com/" target="__blank" rel="noopener noreferrer">Git's official website</Link>.
+
+    To verify the installation, run:
+
+    ```bash
+    git --version
+    ```
+
+### **Cloning the Repository**
+
+Our frontend code is hosted on GitHub. To get started, you'll need to clone the repository to your local machine.
+
+1.  **Open Terminal:**
+
+    Navigate to the directory where you want to place the project.
+
+2.  **Clone the Repository:**
+
+    ```bash
+    git clone https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App
+    ```
+
+3.  **Navigate to the Frontend Directory:**
+
+    ```bash
+    cd AlphaZero-Tic-Tac-Toe-App/frontend
+    ```
+
+### **Installing Required Dependencies**
+
+Once you've cloned the repository and navigated to the frontend directory, the next step is to install all the necessary dependencies. Dependencies are external libraries and packages that our React application relies on to function correctly.
+
+1.  **Install Dependencies with npm:**
+
+    Run the following command to install all the packages listed in the `package.json` file:
+
+    ```bash
+    npm install
+    ```
+
+**Explanation:**
+
+-   `npm install`: Reads the `package.json` file and installs all listed dependencies into a `node_modules` folder within your project directory.
+-   This process might take a few minutes, depending on the number of dependencies and your internet speed.
+
+### **Starting the React Application**
+
+With all dependencies installed, you're now ready to start the React application. This process will launch the frontend in your web browser, allowing you to interact with the Tic-Tac-Toe game.
+
+1.  **Start the Application:**
+
+    Run the following command to start the development server:
+
+    ```bash
+    npm start
+    ```
+
+-   **Explanation:**
+
+    -   `npm start`: Runs the `start` script defined in the `package.json` file, which typically launches the React development server using tools like **Webpack** or **Vite**.
+    -   This command will compile the React application and open it in your default web browser, usually at `http://localhost:3000/`.-   **Understanding the Development Server:**
+
+    -   The development server provides features like **hot reloading**, which automatically refreshes the browser whenever you make changes to the code.
+    -   Any errors or warnings in your code will be displayed in the terminal and the browser console, aiding in debugging.-   **Verifying the Setup:**
+
+    After running `npm start`, you should see the frontend application running in your browser. It will display the initial game interface, allowing you to choose whether to play first or second.
+
+## 3. **Building the User Interface**
+
+In **Part 3** of our blog series, we transition from setting up the backend to creating an engaging and interactive frontend using **React.js**. 
+
+This section will guide you through building the user interface components essential for our AlphaZero-inspired Tic-Tac-Toe application. 
+
+We'll break down each component, explaining its purpose, functionality, and how it integrates with the overall application. 
+
+Whether you're new to React or coming from a machine learning background, this guide will help you understand the fundamentals of frontend development in the context of our project.
+
+### **Understanding React.js**
+
+Before diving into the components, let's briefly understand what **React.js** is and why we're using it:
+
+- **React.js** is a popular JavaScript library developed by Facebook for building dynamic and responsive user interfaces.
+- It allows developers to create reusable UI components, manage application state efficiently, and build complex interfaces with ease.
+
+With this foundation, let's explore the key components of our frontend application.
+
+---
+
+### **Game Board Component (`GameBoard.js`)**
+
+#### **Purpose and Functionality**
+
+The **GameBoard** component serves as the main interface for our Tic-Tac-Toe game. Its primary responsibilities include:
+
+- Rendering the game board grid.
+- Displaying each cell of the board.
+- Handling user interactions when a player makes a move.
+
+By breaking down the game board into individual cells, we create a modular and manageable structure, making it easier to handle user actions and update the game state.
+
+#### **Rendering the Board**
+
+Let's examine the code for `GameBoard.js` and understand how it accomplishes its tasks:
+
+```javascript
+// src/components/GameBoard.js
+
+import React from 'react';
+import Cell from './Cell';
+
+const GameBoard = ({ board, onCellClick }) => {
+  return (
+    <div className="flex flex-col items-center">
+      {board.map((row, rowIndex) => (
+        <div className="flex" key={rowIndex}>
+          {row.map((cellValue, colIndex) => (
+            <Cell
+              key={`${rowIndex}-${colIndex}`}
+              row={rowIndex}
+              col={colIndex}
+              value={cellValue}
+              onClick={onCellClick}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default GameBoard;
+```
+
+**Explanation:**
+
+1.  **Import Statements:**
+
+    -   `React`: Essential for creating React components.
+    -   `Cell`: The child component representing each cell on the game board.
+2.  **GameBoard Component:**
+
+    -   **Props:**
+        -   `board`: A 2D array representing the current state of the game board.
+        -   `onCellClick`: A callback function to handle user clicks on cells.
+3.  **Rendering Logic:**
+
+    -   The `board` array is iterated using the `map` function to create rows.
+    -   For each row, a `div` with Flexbox classes (`flex`) is created to align cells horizontally.
+    -   Within each row, the `map` function iterates over each cell value to render individual `Cell` components.
+    -   Each `Cell` receives its position (`rowIndex`, `colIndex`), current value (`cellValue`), and the `onCellClick` handler as props.
+4.  **Styling:**
+
+    -   Tailwind CSS classes (`flex`, `flex-col`, `items-center`) are used for layout and styling, ensuring a responsive and visually appealing grid.
+
+**Visual Representation:**
+
+The `GameBoard` component creates a grid layout where each `Cell` component represents a single cell in the Tic-Tac-Toe game. Users can interact with these cells to make their moves.
+
+This is how our GameBoard will look like in the UI. Each of its cell is designed by the `Cell` component which we will discuss next.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={GameBoard}
+    alt="AlphaZero Tic Tac Toe Gameboard"
+    width={800}
+    height={800}
+  />
+</div>
+
+
+### **Cell Component (`Cell.js`)**
+
+#### **Handling User Interactions**
+
+The **Cell** component represents an individual cell on the game board. It handles user interactions, such as clicks, and displays the current state of the cell (empty, Player X, or Player O).
+
+```javascript
+// src/components/Cell.js
+
+import React from 'react';
+
+const Cell = ({ row, col, value, onClick }) => {
+  const handleClick = () => {
+    onClick(row, col);
+  };
+
+  const renderValue = () => {
+    if (value === 1)
+      return <span className="text-red-500 text-lg sm:text-xl md:text-3xl animate-pop">&#10005;</span>;
+    if (value === -1)
+      return <span className="text-blue-500 text-lg sm:text-xl md:text-3xl animate-pop">&#9711;</span>;
+    return '';
+  };
+
+  const cellClasses = `
+    w-10 h-10 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 
+    flex items-center justify-center border 
+    border-gray-400 text-lg sm:text-xl md:text-2xl lg:text-3xl 
+    font-bold cursor-pointer 
+    hover:bg-gray-200 transition duration-200
+  `;
+
+  return (
+    <div className={cellClasses} onClick={handleClick}>
+      {renderValue()}
+    </div>
+  );
+};
+
+export default Cell;
+```
+
+**Explanation:**
+
+1.  **Import Statement:**
+
+    -   `React`: Necessary for creating the component.
+2.  **Cell Component:**
+
+    -   **Props:**
+        -   `row`, `col`: The position of the cell on the board.
+        -   `value`: The current state of the cell (`0` for empty, `1` for Player X, `-1` for Player O).
+        -   `onClick`: Callback function to handle cell clicks.
+3.  **handleClick Function:**
+
+    -   Invoked when a cell is clicked.
+    -   Calls the `onClick` function passed down from the parent (`GameBoard`) with the cell's row and column indices.
+4.  **renderValue Function:**
+
+    -   Determines what to display inside the cell based on its `value`.
+    -   If `value === 1`, displays a red "X" (`&#10005;`).
+    -   If `value === -1`, displays a blue "O" (`&#9711;`).
+    -   If `value === 0`, the cell remains empty.
+5.  **Styling with Tailwind CSS:**
+
+    -   **Size Classes:** `w-10 h-10` to `w-20 h-20` across different screen sizes (`sm`, `md`, `lg`).
+    -   **Flexbox Classes:** `flex items-center justify-center` centers the content.
+    -   **Border:** `border border-gray-400` adds a visible border.
+    -   **Typography:** Adjusts text size and color based on the cell's state.
+    -   **Interactivity:** `cursor-pointer`, `hover:bg-gray-200`, and `transition duration-200` enhance user experience with hover effects and smooth transitions.
+6.  **Animation:**
+
+    -   The `animate-pop` class adds a popping animation when a move is made, making the game more engaging.
+
+**Visual Representation:**
+
+Each `Cell` is a clickable box that displays an "X", "O", or remains empty based on the game state. When a user clicks on a cell, it triggers the `handleClick` function to update the game accordingly.
+
+### **Card Component (`Card.js`)**
+
+#### **Displaying Game Information**
+
+The **Card** component is a reusable UI element designed to display various pieces of information related to the game, such as node details or MCTS summaries. 
+
+It provides a consistent and visually appealing container for information, enhancing the overall user experience.
+
+```javascript
+// src/components/Card.js
+
+import React from 'react';
+
+const Card = ({ title, children }) => (
+  <div
+    className={`relative w-full max-w-sm md:max-w-md lg:max-w-full p-6 rounded-lg shadow-lg mt-4 bg-gradient-to-r from-gray-700 via-rose-500 to-orange-400`}
+    style={{
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+    }}
+  >
+    <h3 className="text-2xl font-bold text-white mb-4 tracking-wide">
+      {title}
+    </h3>
+    <div className="text-white text-base leading-relaxed">{children}</div>
+  </div>
+);
+
+export default Card;
+```
+
+**Explanation:**
+
+1.  **Import Statement:**
+
+    -   `React`: Necessary for creating the component.
+2.  **Card Component:**
+
+    -   **Props:**
+        -   `title`: The heading of the card.
+        -   `children`: The content to be displayed inside the card.
+3.  **Styling with Tailwind CSS:**
+
+    -   **Container Classes:**
+        -   `relative`, `w-full`, `max-w-sm`, `md:max-w-md`, `lg:max-w-full`: Ensure responsiveness across different screen sizes.
+        -   `p-6`: Adds padding inside the card.
+        -   `rounded-lg`: Gives the card rounded corners.
+        -   `shadow-lg`: Adds a shadow for depth.
+        -   `mt-4`: Adds top margin to separate from other elements.
+        -   `bg-gradient-to-r from-gray-700 via-rose-500 to-orange-400`: Creates a gradient background from gray to orange.
+    -   **Inline Styles:**
+        -   `backgroundSize` and `backgroundPosition` ensure the background image (if any) covers the card appropriately.
+4.  **Content Structure:**
+
+    -   **Title (`h3`):**
+        -   Styled with larger text, bold font, white color, and tracking (letter spacing) for emphasis.
+    -   **Children (`div`):**
+        -   Displays the passed content in white text with relaxed line spacing for readability.
+
+**Visual Representation:**
+
+The `Card` component creates a visually distinct section that can display various information snippets, ensuring consistency and enhancing the aesthetic appeal of the application.
+    
+This is how our `Card` component will look like in the UI. It shows the Node information for any node you click on the tree. It also shows the MCTS summary uptil now.
+
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={Cards}
+    alt="React Tailwind Cards to show MCTS summary and Node information"
+    width={800}
+    height={400}
+  />
+</div>
+
+
+### **MCTS Tree Visualization (`MctsTree.js` and `MctsTree.css`)**
+
+#### **Visualizing the AI's Decision-Making Process**
+
+The **MCTS Tree** component provides a graphical representation of the Monte Carlo Tree Search (MCTS) algorithm's decision-making process. 
+
+It allows users to visualize how the AI explores different moves and selects the optimal one, offering deeper insights into the AI's strategy.
+
+```javascript
+// src/components/MctsTree.js
+
+import React, { useMemo, useRef } from "react";
+import { Group } from "@visx/group";
+import { Tree as VisxTree, hierarchy } from "@visx/hierarchy";
+import { LinkVertical } from "@visx/shape";
+import { Zoom } from "@visx/zoom";
+import { LinearGradient } from "@visx/gradient";
+import { scaleLinear } from "d3-scale";
+import { Tooltip as ReactTooltip } from "react-tooltip";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
+import "./MctsTree.css"; // Ensure this file includes necessary styles
+
+const MctsTree = ({ data, maxN, maxV, onNodeSelect }) => {
+  const svgRef = useRef(null);
+  const margin = { top: 40, left: 40, right: 40, bottom: 40 };
+
+  // Scales for node coloring and sizing
+  const colorScale = scaleLinear()
+    .domain([-maxV, 0, maxV])
+    .range(["#d73027", "#ffffbf", "#1a9850"]); // Red to Yellow to Green
+
+  const sizeScale = scaleLinear().domain([1, maxN]).range([10, 30]); // Circle radii from 10 to 30
+
+  // Function to interpolate node color based on V value
+  const getNodeColor = (V) => {
+    return colorScale(V);
+  };
+
+  // Function to interpolate node size based on N value
+  const getNodeSize = (N) => {
+    return sizeScale(N);
+  };
+
+  // Transform the data into hierarchy
+  const root = useMemo(
+    () => hierarchy(data, (d) => d.children || d._children),
+    [data]
+  );
+
+  const renderNode = ({ node }) => {
+    const nodeColor = getNodeColor(node.data.V);
+    const nodeSize = getNodeSize(node.data.N);
+
+    // Tooltip content formatted as HTML
+    const tooltipContent = `
+      <div>
+        ${
+          node.data.action
+            ? `<strong>Action:</strong> (${node.data.action[0]}, ${node.data.action[1]})<br/>`
+            : ""
+        }
+        <strong>Visit Count (N):</strong> ${node.data.N}<br/>
+        <strong>Value (V):</strong> ${node.data.V.toFixed(2)}<br/>
+        <strong>Probability:</strong> ${
+          node.data.prob ? (node.data.prob * 100).toFixed(2) + "%" : "N/A"
+        }
+      </div>
+    `;
+
+    return (
+      <Group top={node.y} left={node.x}>
+        {/* Node circle */}
+        <circle
+          r={nodeSize}
+          fill={nodeColor}
+          stroke={node.data.isSelected ? "#ff0" : node.data.isBestPath ? "#ff4500" : "#555"}
+          strokeWidth={node.data.isSelected ? 3 : node.data.isBestPath ? 2 : 1}
+          onClick={() => {
+            onNodeSelect(node.data); // Communicate selected node to App.js
+          }}
+          style={{ cursor: "pointer" }}
+          data-tip={tooltipContent}
+        />
+        {/* High-value node glow */}
+        {Math.abs(node.data.V) === maxV && (
+          <circle
+            r={nodeSize + 5}
+            fill="none"
+            stroke="red"
+            strokeWidth={2}
+            strokeOpacity={0.6}
+          />
+        )}
+      </Group>
+    );
+  };
+
+  const renderLink = (link) => {
+    const isBestPath = link.target.data.isBestPath;
+
+    return (
+      <LinkVertical
+        data={link}
+        stroke={isBestPath ? "#ff4500" : "#999"}
+        strokeWidth={isBestPath ? 2 : 1}
+        fill="none"
+        strokeOpacity={isBestPath ? 1 : 0.6}
+      />
+    );
+  };
+
+  return (
+    <div className="flex flex-col items-center w-full">
+      {/* Tree Visualization */}
+      <div className="w-full h-96 md:h-128 lg:h-full">
+        <Zoom
+          width={1200} // Placeholder; consider using responsive techniques
+          height={800}
+          scaleMin={0.1}
+          scaleMax={2}
+          wheelDelta={(event) => -event.deltaY / 500}
+        >
+          {(zoom) => (
+            <div className="w-full h-full relative">
+              <svg
+                width="100%"
+                height="100%"
+                ref={svgRef}
+                style={{ border: "1px solid #ddd" }}
+                viewBox={`0 0 1200 800`}
+                preserveAspectRatio="xMidYMid meet"
+              >
+                {/* Background */}
+                <LinearGradient id="lg" from="#fd9b93" to="#fe6e9e" />
+                <rect width="100%" height="100%" fill="#f9f9f9" />
+                <Group
+                  top={margin.top}
+                  left={margin.left}
+                  transform={zoom.toString()}
+                >
+                  <VisxTree
+                    root={root}
+                    size={[
+                      1200 - margin.left - margin.right,
+                      800 - margin.top - margin.bottom,
+                    ]}
+                    separation={(a, b) => (a.parent === b.parent ? 1 : 0.8)}
+                  >
+                    {(tree) => (
+                      <Group>
+                        <TransitionGroup component={null}>
+                          {tree.links().map((link, i) => (
+                            <CSSTransition
+                              key={`link-${i}`}
+                              timeout={300}
+                              classNames="link"
+                            >
+                              <Group key={`link-${i}`}>
+                                {renderLink(link)}
+                              </Group>
+                            </CSSTransition>
+                          ))}
+                        </TransitionGroup>
+                        <TransitionGroup component={null}>
+                          {tree.descendants().map((node, i) => (
+                            <CSSTransition
+                              key={`node-${i}`}
+                              timeout={300}
+                              classNames="node"
+                            >
+                              <Group key={`node-${i}`}>
+                                {renderNode({ node })}
+                              </Group>
+                            </CSSTransition>
+                          ))}
+                        </TransitionGroup>
+                      </Group>
+                    )}
+                  </VisxTree>
+                </Group>
+              </svg>
+              {/* Zoom Controls */}
+              <div className="zoom-controls absolute top-4 right-4 flex space-x-2">
+                <button
+                  onClick={() => {
+                    zoom.scale({
+                      scaleX: zoom.transformMatrix.scaleX * 1.2,
+                      scaleY: zoom.transformMatrix.scaleY * 1.2,
+                    });
+                  }}
+                  className="bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600 transition duration-200"
+                  aria-label="Zoom In"
+                >
+                  +
+                </button>
+                <button
+                  onClick={() => {
+                    zoom.scale({
+                      scaleX: zoom.transformMatrix.scaleX * 0.8,
+                      scaleY: zoom.transformMatrix.scaleY * 0.8,
+                    });
+                  }}
+                  className="bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600 transition duration-200"
+                  aria-label="Zoom Out"
+                >
+                  -
+                </button>
+                <button
+                  onClick={zoom.reset}
+                  className="bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-600 transition duration-200"
+                  aria-label="Reset Zoom"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+          )}
+        </Zoom>
+      </div>
+
+      {/* Tooltip Instance */}
+      <ReactTooltip place="top" effect="solid" />
+    </div>
+  );
+};
+
+export default MctsTree;
+```
+
+**Explanation:**
+
+1.  **Import Statements:**
+
+    -   **React and Hooks:** For creating the component and managing references.
+    -   **VisX Library Components:**
+        -   `Group`, `VisxTree`, `hierarchy`, `LinkVertical`, `Zoom`, `LinearGradient`: Used for building and styling the tree visualization.
+    -   **D3 Scale:** `scaleLinear` for scaling node colors and sizes based on data.
+    -   **React Tooltip:** For displaying tooltips with node information.
+    -   **React Transition Group:** For adding animations to node and link rendering.
+    -   **CSS:** `MctsTree.css` for additional styling.
+2.  **MctsTree Component:**
+
+    -   **Props:**
+        -   `data`: The MCTS tree data to visualize.
+        -   `maxN`, `maxV`: Maximum values for scaling node sizes and colors.
+        -   `onNodeSelect`: Callback function to handle node selection events.
+3.  **Scales for Visualization:**
+
+    -   **Color Scale (`colorScale`):**
+        -   Maps the `V` value (evaluation of the node) to a color gradient from red (negative) through yellow (neutral) to green (positive).
+    -   **Size Scale (`sizeScale`):**
+        -   Maps the `N` value (visit count) to circle radii, making frequently visited nodes appear larger.
+4.  **Hierarchy Transformation:**
+
+    -   Uses `useMemo` and `hierarchy` from VisX to transform the flat `data` into a hierarchical structure suitable for tree visualization.
+5.  **Rendering Nodes and Links:**
+
+    -   **renderNode Function:**
+        -   Renders each node as a circle with color and size based on its `V` and `N` values.
+        -   Adds stroke styles to highlight selected nodes or the best path.
+        -   Attaches a click handler to enable node selection.
+        -   Integrates tooltips to display detailed node information.
+    -   **renderLink Function:**
+        -   Draws vertical links between nodes.
+        -   Highlights links that are part of the best path.
+6.  **Zoom Functionality:**
+
+    -   Wraps the SVG in a `Zoom` component to allow users to pan and zoom the tree for better visibility.
+    -   Provides zoom controls (`+`, `-`, `Reset`) for user interaction.
+7.  **Styling and Animation:**
+
+    -   Utilizes CSS transitions for smooth rendering of nodes and links.
+    -   Applies gradient backgrounds and responsive sizing to ensure the visualization looks good on all devices.
+8.  **Tooltip Integration:**
+
+    -   Uses `ReactTooltip` to show detailed information when users hover over nodes, enhancing interactivity and understanding of the AI's decision-making process.
+
+**Visual Representation:**
+
+The `MctsTree` component creates an interactive tree diagram that visualizes the AI's exploration of possible moves using MCTS. 
+
+Users can zoom in/out, pan around the tree, and click on nodes to view detailed information, providing valuable insights into the AI's strategy.
+
+This component sizes and color the nodes based on their relative importances. It also shows the best path at any given point in time for the AI.
+
+Here's how it looks like in the UI.
+
+<div className="flex justify-center items-center w-full">
+  <Image
+    src={MCTSTree}
+    alt="Monte Carlo Tree Search with Alpha Zero"
+    width={800}
+    height={400}
+  />
+</div>
+
+### **Main App File (`App.js`)**
+
+#### **Integrating All Components and Managing Application State**
+
+The **App** component serves as the central hub of our frontend application. It orchestrates the interaction between various components, manages the game state, handles API calls to the backend, and ensures a seamless user experience.
+
+```javascript
+// src/App.js
+
+import React, { useState, useEffect } from "react";
+import GameBoard from "./components/GameBoard";
+import axios from "axios";
+import { ClipLoader } from "react-spinners";
+import MctsTree from "./components/MctsTree";
+import Card from "./components/Card";
+import {
+  RadialBarChart,
+  RadialBar,
+  Legend,
+  Tooltip as RechartsTooltip,
+  ResponsiveContainer,
+} from "recharts";
+
+function App() {
+  const [board, setBoard] = useState([]);
+  const [player, setPlayer] = useState(1);
+  const [winner, setWinner] = useState(null);
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [mctsTreeData, setMctsTreeData] = useState(null);
+  const [treeDepth, setTreeDepth] = useState(3);
+  const [mctsSummary, setMctsSummary] = useState(null);
+  const [aiProbability, setAiProbability] = useState(null);
+  const [maxN, setMaxN] = useState(1);
+  const [maxV, setMaxV] = useState(1);
+  const [gameStarted, setGameStarted] = useState(false);
+  const [playerOrder, setPlayerOrder] = useState(null); // 1 for first, -1 for second
+  const [selectedNodeData, setSelectedNodeData] = useState(null); // Node Information
+
+  const API_BASE_URL = "http://localhost:8000";
+
+  // useEffect(() => {
+  //   // Remove the initial startGame call
+  //   // startGame();
+  // }, []);
+
+  const startGame = async (playerChoice) => {
+    try {
+      const response = await axios.post(`${API_BASE_URL}/start_game`, {
+        player: playerChoice,
+      });
+      setBoard(response.data.board);
+      setPlayer(response.data.player);
+      setWinner(null);
+      setMessage(
+        playerChoice === 1
+          ? "Game started! You're player X"
+          : "Game started! AI is player X"
+      );
+      setMctsTreeData(null); // Reset MCTS data
+      setMctsSummary(null);
+      setAiProbability(null); // Reset AI probability
+      setGameStarted(true);
+      setPlayerOrder(playerChoice);
+      if (playerChoice === -1) {
+        // Player chose to be second, AI starts
+        setMessage("AI's turn...");
+        await aiMove();
+        await fetchAiProbability();
+      } else {
+        setMessage("Your turn");
+      }
+    } catch (error) {
+      console.error("Error starting game:", error);
+      setMessage("Error starting game.");
+    }
+  };
+
+  const onCellClick = async (row, col) => {
+    if (winner !== null || board[row][col] !== 0) return;
+
+    try {
+      // Player makes a move
+      const response = await axios.post(`${API_BASE_URL}/make_move`, {
+        row,
+        col,
+      });
+      setBoard(response.data.board);
+      setPlayer(response.data.player);
+
+      if (response.data.winner !== null) {
+        setWinner(response.data.winner);
+        setMessage(`Player ${response.data.winner === 1 ? "X" : "O"} wins!`);
+        setMctsTreeData(null); // Reset MCTS data
+        setMctsSummary(null);
+        setAiProbability(null); // Reset AI probability
+      } else {
+        setMessage("AI's turn...");
+        // AI makes a move
+        await aiMove();
+        await fetchAiProbability();
+      }
+
+      // Fetch MCTS tree and select the node corresponding to the last played action
+      await fetchMctsTree();
+      setSelectedNodeData(findNodeByAction([row, col])); // Select the last played node
+    } catch (error) {
+      console.error("Error making move:", error);
+      if (error.response && error.response.data.detail) {
+        setMessage(error.response.data.detail);
+      }
+    }
+  };
+
+  const aiMove = async () => {
+    try {
+      setLoading(true); // Start loading
+      const response = await axios.get(`${API_BASE_URL}/ai_move`);
+      setBoard(response.data.board);
+      setPlayer(response.data.player);
+      setLoading(false); // Stop loading
+
+      if (response.data.winner !== null) {
+        setWinner(response.data.winner);
+        setMessage(`Player ${response.data.winner === 1 ? "X" : "O"} wins!`);
+        setMctsTreeData(null); // Reset MCTS data
+        setMctsSummary(null);
+        setAiProbability(null); // Reset AI probability
+      } else {
+        setMessage("Your turn");
+        // Fetch the MCTS tree, summary, and AI's probability after AI moves
+        await fetchMctsTree();
+        await fetchMctsSummary();
+        await fetchAiProbability();
+
+        // Set selected node as AI's last move
+        setSelectedNodeData(findNodeByAction(response.data.move)); // Use AI's last action
+      }
+    } catch (error) {
+      console.error("Error with AI move:", error);
+      setLoading(false); // Stop loading
+      setMessage("Error with AI move.");
+    }
+  };
+
+  const findNodeByAction = (action) => {
+    // Recursive helper function to traverse MCTS tree and find the node by action
+    const traverse = (node) => {
+      if (!node) return null;
+      if (
+        node.action &&
+        node.action[0] === action[0] &&
+        node.action[1] === action[1]
+      ) {
+        return node;
+      }
+      if (node.children) {
+        for (const child of node.children) {
+          const result = traverse(child);
+          if (result) return result;
+        }
+      }
+      return null;
+    };
+
+    return mctsTreeData ? traverse(mctsTreeData) : null;
+  };
+
+  const fetchAiProbability = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/ai_probability`);
+      console.log(response.data.probability_of_winning);
+      setAiProbability(response.data.probability_of_winning);
+    } catch (error) {
+      console.error("Error fetching AI probability:", error);
+    }
+  };
+
+  const fetchMctsTree = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/get_mcts_tree`, {
+        params: { max_depth: treeDepth },
+      });
+      const mctsData = response.data.tree;
+      if (!mctsData) {
+        setMctsTreeData(null);
+        return;
+      }
+      // Update maxN and maxV for normalization
+      const { maxN, maxV } = getMaxNandV(mctsData);
+      setMaxN(maxN);
+      setMaxV(maxV);
+      const transformedData = transformMctsData(mctsData, maxN, maxV);
+      setMctsTreeData(transformedData);
+    } catch (error) {
+      console.error("Error fetching MCTS tree data:", error);
+    }
+  };
+
+  const getMaxNandV = (node, currentMaxN = 0, currentMaxV = 0) => {
+    if (!node) return { maxN: currentMaxN, maxV: currentMaxV };
+    currentMaxN = Math.max(currentMaxN, node.N);
+    currentMaxV = Math.max(currentMaxV, Math.abs(node.V));
+    if (node.children) {
+      node.children.forEach((child) => {
+        const { maxN: childMaxN, maxV: childMaxV } = getMaxNandV(
+          child,
+          currentMaxN,
+          currentMaxV
+        );
+        currentMaxN = childMaxN;
+        currentMaxV = childMaxV;
+      });
+    }
+    return { maxN: currentMaxN, maxV: currentMaxV };
+  };
+
+  const fetchMctsSummary = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/get_mcts_summary`);
+      setMctsSummary(response.data.summary);
+    } catch (error) {
+      console.error("Error fetching MCTS summary:", error);
+    }
+  };
+
+  const transformMctsData = (node, maxN, maxV) => {
+    if (!node) return null;
+
+    const children = node.children
+      ? node.children.map((child) => transformMctsData(child, maxN, maxV))
+      : [];
+
+    return {
+      name: node.action ? `(${node.action.join(", ")})` : "Root",
+      id: node.id,
+      N: node.N,
+      V: node.V,
+      prob: node.prob,
+      isBestPath: node.is_best_path,
+      action: node.action, // Preserve 'action' as an array
+      children: children,
+      maxN: maxN,
+      maxV: maxV,
+    };
+  };
+
+  const handleNodeSelect = (nodeData) => {
+    setSelectedNodeData(nodeData);
+  };
+
+  return (
+    <div className="App min-h-screen bg-gray-100 py-10 px-4">
+      {/* Header */}
+      <div className="text-center mb-6">
+        <h1 className="text-4xl font-bold">AlphaZero - Tic Tac Toe</h1>
+        <p className="text-lg">{message}</p>
+      </div>
+
+      {!gameStarted ? (
+        // Pre-game Selection Screen
+        <div className="flex flex-col items-center justify-center h-full">
+          <h2 className="text-2xl font-semibold mb-6">Choose Your Order</h2>
+          <div className="flex space-x-4">
+            <button
+              onClick={() => startGame(1)} // Player goes first
+              className="bg-gradient-to-r from-blue-400 to-blue-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg hover:from-blue-500 hover:to-blue-700 transition-transform transform hover:scale-105 duration-300"
+            >
+              Go First
+            </button>
+            <button
+              onClick={() => startGame(-1)} // Player goes second
+              className="bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-full shadow-md hover:shadow-lg hover:from-green-500 hover:to-green-700 transition-transform transform hover:scale-105 duration-300"
+            >
+              Go Second
+            </button>
+          </div>
+        </div>
+      ) : (
+        // Main Game Content
+        <div className="flex flex-col lg:flex-row">
+          {/* Left Side: Game Board and Probability Chart */}
+          <div className="w-full lg:w-1/3 flex flex-col items-center lg:pr-4">
+            {/* Game Board */}
+            <div className="w-full max-w-sm md:max-w-md lg:max-w-full -mt-24">
+              <GameBoard board={board} onCellClick={onCellClick} />
+            </div>
+
+            {/* Loading Spinner */}
+            {loading && (
+              <div className="flex justify-center items-center mt-4">
+                <ClipLoader color="#4A90E2" loading={loading} size={50} />
+              </div>
+            )}
+
+            {/* Winner Message and New Game Button */}
+            {winner !== null && (
+              <div className="mt-6 flex flex-col items-center">
+                <h2 className="text-2xl font-semibold mb-4">
+                  {winner === 0
+                    ? "It's a draw!"
+                    : `Player ${winner === 1 ? "X" : "O"} wins!`}
+                </h2>
+                <button
+                  onClick={() => setGameStarted(false)} // Return to selection screen
+                  className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200"
+                >
+                  Start New Game
+                </button>
+              </div>
+            )}
+
+            {/* AI Probability Chart */}
+            {aiProbability !== null && (
+              <div className="w-full max-w-sm md:max-w-md lg:max-w-full mt-6 flex flex-col items-center">
+                <h3 className="text-lg font-semibold mb-2">
+                  AI's Probability of Winning
+                </h3>
+                <ResponsiveContainer width="100%" height={250}>
+                  <RadialBarChart
+                    innerRadius="70%"
+                    outerRadius="100%"
+                    data={[
+                      {
+                        name: "AI",
+                        value: aiProbability * 100,
+                        fill: "#ff4d4f",
+                      },
+                      {
+                        name: "You",
+                        value: (1 - aiProbability) * 100,
+                        fill: "#52c41a",
+                      },
+                    ]}
+                    startAngle={90}
+                    endAngle={-270}
+                  >
+                    <RadialBar
+                      minAngle={15}
+                      background
+                      clockWise
+                      dataKey="value"
+                      cornerRadius={10}
+                    />
+                    <RechartsTooltip />
+                    <Legend
+                      iconSize={10}
+                      layout="horizontal"
+                      verticalAlign="bottom"
+                      align="center"
+                    />
+                    <text
+                      x="50%"
+                      y="50%"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      className="text-xl font-bold"
+                    >
+                      {`${(aiProbability * 100).toFixed(1)}%`}
+                    </text>
+                  </RadialBarChart>
+                </ResponsiveContainer>
+                <div className="flex justify-between w-full px-4 mt-2">
+                  <p className="text-green-600 font-semibold">
+                    You:{" "}
+                    {(1 - aiProbability) * 100 < 1
+                      ? "<1"
+                      : ((1 - aiProbability) * 100).toFixed(1)}
+                    %
+                  </p>
+                  <p className="text-red-600 font-semibold">
+                    AI:{" "}
+                    {aiProbability * 100 < 1
+                      ? "<1"
+                      : (aiProbability * 100).toFixed(1)}
+                    %
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* Node Information Section */}
+            {selectedNodeData && (
+              <Card
+                title="Node Information"
+              >
+                <p>
+                  <strong>Action:</strong>{" "}
+                  {selectedNodeData.action
+                    ? `(${selectedNodeData.action[0]}, ${selectedNodeData.action[1]})`
+                    : "Root"}
+                </p>
+                <p>
+                  <strong>Visit Count (N):</strong> {selectedNodeData.N}
+                </p>
+                <p>
+                  <strong>Value (V):</strong> {selectedNodeData.V.toFixed(2)}
+                </p>
+                <p>
+                  <strong>Probability:</strong>{" "}
+                  {selectedNodeData.prob
+                    ? (selectedNodeData.prob * 100).toFixed(2) + "%"
+                    : "N/A"}
+                </p>
+              </Card>
+            )}
+
+            {/* Summaries Section */}
+            <Card
+              title="MCTS Summary"
+            >
+              {mctsSummary ? (
+                <div>
+                  <p>
+                    <strong>Total Nodes:</strong> {mctsSummary.total_nodes}
+                  </p>
+                  <p>
+                    <strong>Average N:</strong>{" "}
+                    {mctsSummary.average_N.toFixed(2)}
+                  </p>
+                  <p>
+                    <strong>Average V:</strong>{" "}
+                    {mctsSummary.average_V.toFixed(5)}
+                  </p>
+                </div>
+              ) : (
+                <p>No summary available.</p>
+              )}
+            </Card>
+          </div>
+
+          {/* Right Side: MCTS Tree */}
+          <div className="w-full lg:w-2/3 mt-8 lg:mt-0 flex flex-col items-center">
+            {mctsTreeData && (
+              <div className="w-full">
+                <h2 className="text-xl font-semibold mb-4 text-center">
+                  AI's MCTS Tree (Click on a node to see its details.)
+                </h2>
+                <div className="flex flex-col items-center">
+                  <div className="mt-4 flex items-center flex-wrap justify-center">
+                    <label htmlFor="depth" className="mr-2">
+                      Tree Depth:
+                    </label>
+                    <input
+                      type="number"
+                      id="depth"
+                      value={treeDepth}
+                      min={1}
+                      max={5}
+                      onChange={(e) => setTreeDepth(parseInt(e.target.value))}
+                      className="border p-1 w-16 text-center mr-4 mb-2"
+                    />
+                    <button
+                      onClick={fetchMctsTree}
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200 mb-2"
+                    >
+                      Update Tree
+                    </button>
+                  </div>
+                  <div className="w-full h-96 md:h-128 lg:h-full">
+                    <MctsTree
+                      data={mctsTreeData}
+                      maxN={maxN}
+                      maxV={maxV}
+                      onNodeSelect={handleNodeSelect} // Pass the callback
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
+```
+
+**Explanation:**
+
+1.  **Import Statements:**
+
+    -   **React and Hooks:** For creating the component and managing state.
+    -   **Components:** `GameBoard`, `MctsTree`, `Card` for building the UI.
+    -   **Axios:** For making HTTP requests to the FastAPI backend.
+    -   **React Spinners:** `ClipLoader` for displaying loading indicators.
+    -   **Recharts:** For creating the AI probability chart (`RadialBarChart`).
+    -   **Additional Libraries:** `react-tooltip`, `react-transition-group` for tooltips and animations.
+2.  **App Component:**
+
+    -   **State Variables:**
+
+        -   `board`: Represents the current state of the game board.
+        -   `player`: Indicates the current active player (`1` for Player X, `-1` for Player O).
+        -   `winner`: Stores the winner of the game (`1`, `-1`, or `null`).
+        -   `message`: Displays status messages to the user.
+        -   `loading`: Indicates if the AI is processing a move.
+        -   `mctsTreeData`: Holds the data for the MCTS tree visualization.
+        -   `treeDepth`: Determines the depth of the MCTS tree to fetch.
+        -   `mctsSummary`: Stores summary metrics of the MCTS tree.
+        -   `aiProbability`: The AI's probability of winning from the current state.
+        -   `maxN`, `maxV`: Maximum values used for scaling in the MCTS tree visualization.
+        -   `gameStarted`: Boolean indicating if a game has started.
+        -   `playerOrder`: Indicates if the player chose to go first (`1`) or second (`-1`).
+        -   `selectedNodeData`: Holds information about the currently selected node in the MCTS tree.
+    -   **API Base URL:**
+
+        -   `API_BASE_URL`: The base URL for the FastAPI backend. Adjust this if your backend is hosted elsewhere.
+3.  **Game Initialization (`startGame`):**
+
+    -   **Functionality:**
+        -   Initiates a new game by sending a POST request to `/start_game` with the player's choice to go first or second.
+        -   Updates the game board, active player, and messages based on the response.
+        -   If the player chooses to go second, the AI makes the first move automatically.
+4.  **Handling Player Moves (`onCellClick`):**
+
+    -   **Functionality:**
+        -   Triggered when a user clicks on a cell.
+        -   Sends a POST request to `/make_move` with the selected row and column.
+        -   Updates the game state based on the response.
+        -   If the game continues, it prompts the AI to make a move and fetches updated probabilities and MCTS data.
+5.  **Handling AI Moves (`aiMove`):**
+
+    -   **Functionality:**
+        -   Sends a GET request to `/ai_move` to let the AI make its move.
+        -   Updates the game board, active player, and checks for a winner.
+        -   Fetches the latest AI probability and MCTS tree data for visualization.
+6.  **Fetching AI Probability (`fetchAiProbability`):**
+
+    -   **Functionality:**
+        -   Sends a GET request to `/ai_probability` to retrieve the AI's likelihood of winning from the current game state.
+        -   Updates the `aiProbability` state for displaying in the UI.
+7.  **Fetching MCTS Tree Data (`fetchMctsTree`):**
+
+    -   **Functionality:**
+        -   Sends a GET request to `/get_mcts_tree` with a specified `max_depth` to retrieve the MCTS tree data.
+        -   Processes the data to determine `maxN` and `maxV` for scaling in the visualization.
+        -   Transforms the raw MCTS data into a format suitable for the `MctsTree` component.
+8.  **Fetching MCTS Summary (`fetchMctsSummary`):**
+
+    -   **Functionality:**
+        -   Sends a GET request to `/get_mcts_summary` to retrieve summary metrics of the MCTS tree.
+        -   Updates the `mctsSummary` state for displaying in the UI.
+9.  **Transforming MCTS Data (`transformMctsData`):**
+
+    -   **Functionality:**
+        -   Recursively processes the MCTS tree data to structure it appropriately for the `MctsTree` component.
+        -   Ensures that node information like action, visit count, value, and probability are correctly formatted.
+10. **Handling Node Selection (`handleNodeSelect`):**
+
+    -   **Functionality:**
+        -   Updates the `selectedNodeData` state when a user selects a node in the MCTS tree visualization.
+        -   Displays detailed information about the selected node in the UI.
+11. **Rendering the UI:**
+
+    -   **Header:**
+        -   Displays the game title and current status message.
+    -   **Pre-game Selection Screen:**
+        -   Allows users to choose whether to go first or second.
+        -   Styled with Tailwind CSS for a modern and responsive look.
+    -   **Main Game Content:**
+        -   **Left Side:**
+            -   **Game Board:** Renders the `GameBoard` component where users interact with the game.
+            -   **Loading Spinner:** Shows a spinner when the AI is processing a move.
+            -   **Winner Message:** Displays the winner and provides an option to start a new game.
+            -   **AI Probability Chart:** Visualizes the AI's probability of winning using a radial bar chart from **Recharts**.
+            -   **Node Information:** Displays detailed information about the selected node in the MCTS tree.
+            -   **MCTS Summary:** Shows summary metrics of the MCTS tree.
+        -   **Right Side:**
+            -   **MCTS Tree Visualization:** Renders the `MctsTree` component, allowing users to visualize and interact with the AI's decision-making process.
+12. **Styling with Tailwind CSS:**
+
+    -   Utilizes Tailwind CSS classes for responsive design, ensuring that the application looks great on all devices.
+    -   Adds gradients, shadows, and hover effects to enhance visual appeal.
+13. **Interactivity and Feedback:**
+
+    -   **Move Animations:** Provides visual feedback when moves are made, making the game more engaging.
+    -   **Win/Draw Notifications:** Clearly informs users about the game's outcome.
+    -   **Interactive Elements:** Allows users to interact with the MCTS tree and view detailed node information.
+
+**Visual Representation:**
+
+The `App.js` component ties together all the frontend components, managing the game flow, user interactions, and data visualization. 
+
+Users can play Tic-Tac-Toe against the AI, see real-time updates, visualize the AI's decision-making process, and receive insightful feedback through charts and summaries.
+
+So finally we're done! 
+
+---
+
+## 6. **Conclusion**
+
+### **Summary of Frontend Development**
+
+In **Part 3** of our blog series, we successfully built the **frontend** for our AlphaZero-inspired Tic-Tac-Toe application using **React.js**. Here's a recap of what we've accomplished:
+
+1. **Structured Project Setup:**
+   - **Cloned the Repository:** Started by cloning the GitHub repository to our local machine.
+   - **Installed Dependencies:** Utilized `npm install` to set up all necessary packages, ensuring our environment was ready for development.
+   - **Launched the Development Server:** Ran `npm start` to launch the React application, making it accessible in the browser for real-time testing and development.
+
+2. **Developed Key UI Components:**
+   - **GameBoard Component (`GameBoard.js`):**
+     - **Purpose:** Acts as the main interface for the Tic-Tac-Toe game.
+     - **Functionality:** Renders the game board grid by mapping over the game state and displays individual cells using the `Cell` component.
+   - **Cell Component (`Cell.js`):**
+     - **Purpose:** Represents each individual cell on the game board.
+     - **Functionality:** Handles user interactions such as clicks and displays the current state (Player X, Player O, or empty) with dynamic styling and animations.
+   - **Card Component (`Card.js`):**
+     - **Purpose:** Serves as a reusable container for displaying various pieces of game-related information.
+     - **Functionality:** Provides a consistent and visually appealing way to show details like node information and MCTS summaries.
+   - **MCTS Tree Visualization (`MctsTree.js` and `MctsTree.css`):**
+     - **Purpose:** Visualizes the Monte Carlo Tree Search (MCTS) algorithm's decision-making process.
+     - **Functionality:** Renders an interactive tree diagram that showcases how the AI explores different moves, complete with tooltips and zoom controls for enhanced user engagement.
+   - **Main App File (`App.js`):**
+     - **Purpose:** Serves as the central hub, orchestrating interactions between all components.
+     - **Functionality:** Manages the game state, handles API calls to the backend, updates the UI based on responses, and integrates visualizations and summaries to provide a comprehensive user experience.
+
+3. **Integrated Styling and Responsiveness:**
+   - **Tailwind CSS:** Leveraged Tailwind's utility-first classes to ensure a modern, responsive, and visually consistent design across all components.
+   - **Animations and Transitions:** Implemented smooth animations using classes like `animate-pop` and transition properties to enhance interactivity and user engagement.
+
+4. **Enhanced User Experience:**
+   - **Interactive Elements:** Added features like zoom controls in the MCTS tree visualization and responsive buttons for starting new games.
+   - **Real-time Feedback:** Incorporated loading spinners and dynamic messages to inform users about the game's status, AI moves, and game outcomes.
+   - **Data Visualization:** Utilized **Recharts** to create radial bar charts that display the AI's probability of winning, providing users with insightful feedback on the game's progress.
+
+### **Future Enhancements and Optimizations**
+
+To elevate our Tic-Tac-Toe application beyond its current state, we can explore several enhancements and optimizations:
+
+1. **Advanced AI Features:**
+   - **Dynamic Difficulty Levels:** Implement multiple difficulty settings, allowing users to choose the AI's challenge level based on their skill.
+   - **Adaptive Learning:** Enable the AI to learn from user interactions over time, improving its strategies and performance.
+
+2. **Enhanced Visualizations:**
+   - **Detailed MCTS Insights:** Provide more in-depth visualizations of the MCTS process, such as heatmaps indicating the most promising moves.
+   - **Interactive Tutorials:** Create interactive tutorials that explain how MCTS and AlphaZero work, making the application educational.
+
+3. **User Experience Improvements:**
+   - **Responsive Design Enhancements:** Further refine the UI to ensure optimal performance and aesthetics across all devices, including tablets and mobile phones.
+   - **Accessibility Features:** Incorporate accessibility standards to make the application usable for individuals with disabilities, such as keyboard navigation and screen reader support.
+
+4. **Performance Optimizations:**
+   - **Code Splitting and Lazy Loading:** Implement code splitting and lazy loading to reduce initial load times and enhance performance.
+   - **Backend Optimizations:** Optimize the FastAPI backend for faster response times, especially during high-load scenarios.
+
+5. **Additional Game Modes:**
+   - **Multiplayer Support:** Introduce multiplayer capabilities, allowing users to play against friends or other online players.
+   - **Extended Game Variants:** Expand the application to support other game variants or entirely different games, leveraging the same AI and backend infrastructure.
+
+6. **Security Enhancements:**
+   - **Authentication and Authorization:** Implement user authentication to manage game sessions, track scores, and personalize user experiences.
+   - **Data Protection:** Ensure that all data transmissions between the frontend and backend are secure, utilizing HTTPS and other security best practices.
+
+7. **Scalability:**
+   - **Horizontal Scaling:** Prepare the backend to handle increased traffic by implementing horizontal scaling strategies.
+   - **Load Balancing:** Utilize load balancers to distribute incoming requests efficiently, ensuring consistent performance.
+
+By pursuing these enhancements and optimizations, we can transform our Tic-Tac-Toe application into a more robust, feature-rich, and user-friendly platform. These improvements will not only enhance user engagement but also demonstrate the powerful synergy between machine learning algorithms and modern frontend development practices.
+
+### **Final Thoughts**
+
+Building an AlphaZero-inspired Tic-Tac-Toe application has been an enlightening journey, merging machine learning and frontend development. Through this series, we've:
+
+- <Link href="/blogs/alpha-zero-tic-tac-toe-part-1-training-the-model" target="__blank">**Trained a Powerful AI Model:** Leveraged Monte Carlo Tree Search to create a superhuman AI capable of strategic gameplay</Link>.
+- <Link href="/blogs/alpha-zero-tic-tac-toe-part-2-creating-fastapi-app" target="__blank">**Developed a Robust Backend:** Utilized FastAPI to manage game logic, AI interactions, and data processing efficiently</Link>.
+- **Crafted an Engaging Frontend:** Employed React.js and Tailwind CSS to build a responsive and interactive user interface, complete with real-time visualizations and insightful feedback mechanisms.
+
+As we look ahead, the possibilities for expanding and refining this application are vast. Whether it's integrating more sophisticated AI techniques, enhancing user interactivity, or scaling the application for broader use, the foundations we've laid provide a solid platform for continuous growth and innovation.
+
+Thank you for following along in this journey. Stay tuned for more exciting developments, tutorials, and insights in the world of AI and web development!
+
+---
+    
+**Codes**: <Link href="https://github.com/sagarnildass/AlphaZero-Tic-Tac-Toe-App" target="_blank" rel="noopener noreferrer">Check the Github Repo for the full code</Link>
+
+*Happy Coding!*
+
+<Link href="/blogs" target="_blank">🔙 Back to all blogs</Link> | <Link href="/" target="_blank">🏠 Home Page</Link>
+
+--- 
+
+## About the Author
+
+<div className="flex justify-center items-center w-full">
+  <Link href="/">
+    <Image
+        src="/images/dp/dp3.jpg"
+        alt="Sagarnil Das"
+        width={300}
+        height={300}
+        className="rounded-full"
+    />
+  </Link>
+</div>
+
+### Sagarnil Das
+
+<Link href="/">Sagarnil Das</Link> is a seasoned AI enthusiast with over 12 years of experience in Machine Learning and Deep Learning. 
+
+He has built scalable AI ecosystems for global giants like the NHS and developed innovative mental health applications that detect emotions and suicidal tendencies.  
+
+Some of his other accomplishments includes: 
+
+-  **Ex-NASA researcher**
+-  **Ex-Udacity Mentor**
+-  **Intel Edge AI scholarship winner**
+-  **Kaggle Notebooks expert**
+
+When he's not immersed in data or crafting AI models, Sagarnil enjoys playing the guitar and doing street photography. 
+
+An avid Dream Theater fan, he believes in blending logic with creativity to solve complex problems.
+
+<Link href="/about">You can find out more about Sagarnil here.</Link>
+
+To contact him regarding any guidance, questions, feedbacks or challenges, you can contact him by clicking the chat icon on the bottom right of the screen.
+
+**Connect with Sagarnil:**
+
+<div className="flex space-x-4 justify-center mt-4">
+  <Link href="https://www.linkedin.com/in/sagarnildas/" target="_blank" rel="noopener noreferrer">
+    LinkedIn
+  </Link>
+  <Link href="https://github.com/sagarnildass/" target="_blank" rel="noopener noreferrer">
+    GitHub
+  </Link>
+  <Link href="https://x.com/sagarnildas03" target="_blank" rel="noopener noreferrer">
+    Twitter
+  </Link>
+</div>

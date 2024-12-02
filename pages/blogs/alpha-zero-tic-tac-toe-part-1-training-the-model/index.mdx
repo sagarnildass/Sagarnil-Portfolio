@@ -132,7 +132,7 @@ By the end of this series, you'll not only understand how to build an AlphaZero-
 
 - **Part 1:** Training the model with MCTS
 - <Link href="/blogs/alpha-zero-tic-tac-toe-part-2-creating-fastapi-app" target="__blank">**Part 2:** Developing a FastAPI backend for our AI</Link>
-- **Part 3:** Creating a gorgeous, user-friendly frontend in <Link href="https://reactjs.org/" target="__blank" rel="noopener noreferrer">React</Link>, where you will play live against a super-human agent. Here you will see live updates to the Game Tree driven by Monte Carlo Tree Search and the trained policy and also get the probability of win at each move.
+- <Link href="/blogs/alpha-zero-tic-tac-toe-part-3-creating-react-ui" target="__blank">**Part 3:** Creating a gorgeous, user-friendly frontend in React</Link>, where you will play live against a super-human agent. Here you will see live updates to the Game Tree driven by Monte Carlo Tree Search and the trained policy and also get the probability of win at each move.
 
 In this part, we’ll lay the foundation, exploring AlphaZero's core mechanics, implementing the neural network, and training it with MCTS.
 
@@ -155,7 +155,7 @@ Let’s dive in!
 
 Tic-Tac-Toe is a classic game where players take turns marking spaces on a grid, aiming to align their symbols in a row, column, or diagonal. The traditional game uses a 3 x 3 grid, but we're upping the ante with a **6 x 6 grid**. In this expanded version, the goal is to align **4 "X" or "O" symbols in a row**, making the game more challenging and interesting.
 
-The larger grid and increased winning condition require more strategic planning, providing the perfect setup to train an AlphaZero-inspired AI. If you're unfamiliar with the standard game rules, check out a <Link href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="__blank" rel="noopener noreferrer">simple explanation of Tic-Tac-Toehere</Link>.
+The larger grid and increased winning condition require more strategic planning, providing the perfect setup to train an AlphaZero-inspired AI. If you're unfamiliar with the standard game rules, check out a <Link href="https://en.wikipedia.org/wiki/Tic-tac-toe" target="__blank" rel="noopener noreferrer">simple explanation of Tic-Tac-Toe here</Link>.
 
 ### Overview of the ConnectN Implementation
 
@@ -414,7 +414,7 @@ In the next section, we’ll delve into building the neural network architecture
 
 The neural network is a crucial component of our AlphaZero-inspired Tic-Tac-Toe agent. It serves two key purposes: guiding the Monte Carlo Tree Search (MCTS) with policy probabilities and evaluating board states with value predictions. Let's break down the architecture, purpose, and functionality of the network, implemented as the `Policy` class.
 
-You can get a refresher on how policy based methods works in Reinforcement Learning in <Link href="/blogs/playing-hangman-with-reinforcement-learning" target="__blank">this blog where I use Reinforcement Learning to train an agent to play hangman</Link>.
+You can get a refresher on how policy based methods works in Reinforcement Learning in this blog where I use <Link href="/blogs/playing-hangman-with-reinforcement-learning" target="__blank">Reinforcement Learning to train an agent to play hangman</Link>.
 
 ---
 
@@ -1092,12 +1092,12 @@ This part has equipped us with a fully functional, trained AlphaZero-style agent
 
 ### Preview of the Next Blog: Developing a FastAPI Backend  
 
-In the next part of this series, we’ll bring our AI to life by developing a robust backend using **FastAPI**. Here’s what you can look forward to:
+In the next part of this series, we’ll bring our <Link href="/blogs/alpha-zero-tic-tac-toe-part-2-creating-fastapi-app" target="__blank">Alpha Zero AI to life by developing a robust backend using **FastAPI**</Link>. Here’s what you can look forward to:
 - **Building RESTful Endpoints:** We’ll create APIs for starting a game, making moves, and getting AI recommendations.
 - **Integrating the Trained Model:** The backend will use our trained AlphaZero agent to play Tic-Tac-Toe dynamically.
 - **Real-Time Performance:** Leveraging FastAPI’s asynchronous capabilities, we’ll ensure the backend is fast, responsive, and scalable.
 
-This backend will serve as the bridge between our AI and a user-friendly frontend, which we’ll tackle in **Part 3** of the series.
+This backend will serve as the bridge between our AI and a user-friendly frontend, which we’ll tackle in <Link href="/blogs/alpha-zero-tic-tac-toe-part-3-creating-react-ui" target="__blank">**Part 3** of the Alpha Zero with MCTS series</Link>.
 
 ---
 
