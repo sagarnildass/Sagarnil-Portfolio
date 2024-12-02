@@ -67,20 +67,17 @@ export default function Home({
 }
 
 export async function getStaticProps() {
-  // FIXME: Add back the github api call
-  // const res = await fetch("https://api.github.com/users/tylerdurden");
-  // const data = await res.json();
-
-  // FIXME: Add back the rss feed generation
-
   const data = await getUserRepositories("sagarnildass");
+
+  // Fetch blogs and sort them by date (newest first)
+  const blogs = (await getAllBlogs())
+    .map(({ component, ...meta }) => meta)
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date
 
   return {
     props: {
       repos: data,
-      blogs: (await getAllBlogs())
-        .slice(0, 4)
-        .map(({ component, ...meta }) => meta),
+      blogs,
     },
   };
 }

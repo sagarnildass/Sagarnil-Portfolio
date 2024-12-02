@@ -86,7 +86,7 @@ export default function AllBlogs({
 
   // If in preview mode, show only the last 2 blogs
   if (isPreview) {
-    const latestBlogs = blogs.slice(-2);
+    const latestBlogs = blogs.slice(0, 2); // Pick the first two blogs (already sorted)
     return (
       <div className="flex flex-col space-y-16">
         {latestBlogs.map((article, idx) => (
@@ -101,7 +101,6 @@ export default function AllBlogs({
       </div>
     );
   }
-
   // Full list with pagination
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
