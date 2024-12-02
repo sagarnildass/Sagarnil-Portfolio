@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useRouter } from "next/router";
-
+import Share from "./Share";
 import { formatDate } from "@/lib/formatDate";
 import { Prose } from "@/components/Prose";
 import { Container } from "./Container";
@@ -29,7 +29,6 @@ export function BlogLayout({
   if (isRssFeed) {
     return children;
   }
-
   return (
     <Container
       meta={{
@@ -37,6 +36,7 @@ export function BlogLayout({
         description: meta.description,
         image: meta.thumbnail, // Use the blog-specific thumbnail
         type: "article", // Set type to article for blog posts
+        slug: meta.slug,
       }}
     >
       <div className="xl:relative md:mt-20 p-8">
@@ -64,7 +64,37 @@ export function BlogLayout({
                 <span className="ml-3">{formatDate(meta.date)}</span>
               </time>
             </header>
+            <section className="section">
+              <div className="container">
+                <div className="section-title">
+                  <h2 className="font-bold text-md md:text-md text-zinc-50 max-w-3xl items-center text-center mt-3 mr-4">
+                    Share this article
+                  </h2>
+                </div>
+                <Share
+                  title={meta.title}
+                  description={meta.description}
+                  slug={meta.slug!}
+                  className="mb-8 flex justify-center text-3xl mt-4"
+                />
+              </div>
+            </section>
             <Prose className="mt-8">{children}</Prose>
+            <section className="section">
+              <div className="container">
+                <div className="section-title">
+                  <h2 className="font-bold text-md md:text-md text-zinc-50 max-w-3xl items-center text-center mt-3 mr-4">
+                    Share this article
+                  </h2>
+                </div>
+                <Share
+                  title={meta.title}
+                  description={meta.description}
+                  slug={meta.slug!}
+                  className="mb-8 flex justify-center text-3xl mt-4"
+                />
+              </div>
+            </section>
           </article>
         </div>
       </div>

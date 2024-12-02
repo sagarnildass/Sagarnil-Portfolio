@@ -53,7 +53,7 @@ export default function BlogsPage({ blogs }: any) {
           <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
             Dive into some of my recent blogs where I share my thoughts on a wide range of topics.
           </p>
-          <AllBlogsForBlogPage blogs={blogs} />
+          <AllBlogsForBlogPage blogs={blogs} perPageNumber={6}/>
         </div>
       </div>
     </Container>

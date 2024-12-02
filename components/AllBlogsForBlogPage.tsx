@@ -36,9 +36,9 @@ function Blog({ article }: any) {
   );
 }
 
-export default function AllBlogsForBlogPage({ blogs }: { blogs: any[] }) {
+export default function AllBlogsForBlogPage({ blogs, perPageNumber }: { blogs: any[], perPageNumber: number }) {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const blogsPerPage = 6; // Number of blogs per page
+  const blogsPerPage = perPageNumber; // Number of blogs per page
   const totalPages = Math.ceil(blogs.length / blogsPerPage);
 
   const currentBlogs = blogs.slice(
