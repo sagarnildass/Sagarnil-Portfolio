@@ -50,7 +50,7 @@ export default function Home({
           <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8 mb-4">
             Recent Blogs
           </h2>
-          <AllBlogs blogs={blogs} isPreview />
+          <AllBlogs blogs={blogs} />
           <div className="flex justify-center relative z-[70] mt-4">
             <Link
               href="/blogs"

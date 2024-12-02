@@ -1,6 +1,6 @@
 import { getAllBlogs } from "@/lib/getAllBlogs";
 import { Container } from "@/components/Container";
-import AllBlogs from "@/components/AllBlogs";
+import AllBlogsForBlogPage from "@/components/AllBlogsForBlogPage";
 import Link from "next/link";
 
 export default function BlogsPage({ blogs }: any) {
@@ -50,7 +50,10 @@ export default function BlogsPage({ blogs }: any) {
           <h2 className="font-bold text-2xl md:text-4xl md:leading-tight text-zinc-50 max-w-3xl">
             Recent Blogs
           </h2>
-          <AllBlogs blogs={blogs} />
+          <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
+            Dive into some of my recent blogs where I share my thoughts on a wide range of topics.
+          </p>
+          <AllBlogsForBlogPage blogs={blogs} />
         </div>
       </div>
     </Container>

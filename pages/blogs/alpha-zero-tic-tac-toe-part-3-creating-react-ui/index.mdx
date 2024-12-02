@@ -1,0 +1,21 @@
+import { BlogLayout } from "@/components/BlogLayout";
+import banner from "./banner.png";
+import Image from "next/image";
+import Link from "next/link";
+
+export const meta = {
+  author: "Sagarnil Das",
+  date: "2024-12-02",
+  title:
+    "Training AlphaZero with Monte Carlo Tree Search: Part 3",
+  description:
+    "Learn to create a React frontend for AlphaZero Tic-Tac-Toe, with a beautiful UI and turn by turn visualization",
+  thumbnail: "/images/blogs/alphazero_banner.png",
+};
+
+export default (props) => <BlogLayout meta={meta} {...props} />;
+
+<Image
+  src={banner}
+  alt="Training AlphaZero with Monte Carlo Tree Search: Building a Tic-Tac-Toe Champion"
+/>
