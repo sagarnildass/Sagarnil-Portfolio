@@ -34,4 +34,11 @@ export const projects = [
     stack: [stack.react, stack.tailwindcss, stack.typescript],
     link: "https://shareme-sagarnil.netlify.app/",
   },
+  {
+    title: "Vastra AI",
+    description: "Ask VastraAI what to wear, get personalized outfit ideas, and shop the perfect look – all in one place, with its semantic search engine. Currently in development.",
+    image: "/images/projects/vastra_ai.jpg",
+    stack: [stack.nextjs, stack.tailwindcss, stack.typescript],
+    link: "https://www.vastraai.com/",
+  }
 ];
