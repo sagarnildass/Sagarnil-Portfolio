@@ -12,6 +12,7 @@ import { Uses } from "@/components/Uses";
 import { AnimatedTestimonials } from "@/components/ui/animated-testimonials";
 import { testimonials } from "@/constants/testimonials";
 import Link from "next/link";
+import ConvertkitSignupForm from "@/components/ConvertkitSignupForm";
 // const inter = Inter({ subsets: ["latin"] });
 
 export default function Home({
@@ -30,6 +31,7 @@ export default function Home({
   return (
     <Container>
       <Hero />
+
       <Experience />
       <h2 className="text-2xl md:text-3xl text-white font-bold max-w-5xl mx-auto px-8  mt-40">
         Here are some kind words from some exceptional people.
@@ -58,6 +60,9 @@ export default function Home({
             >
               View All Blogs
             </Link>
+          </div>
+          <div className="mt-8">
+            <ConvertkitSignupForm formId="4799506" />
           </div>
         </div>
         <Uses />

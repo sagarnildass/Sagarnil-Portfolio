@@ -4,6 +4,7 @@ import Share from "./Share";
 import { formatDate } from "@/lib/formatDate";
 import { Prose } from "@/components/Prose";
 import { Container } from "./Container";
+import ConvertkitSignupForm from "./ConvertkitSignupForm";
 
 function ArrowLeftIcon(props: any) {
   return (
@@ -77,6 +78,9 @@ export function BlogLayout({
                   slug={meta.slug!}
                   className="mb-8 flex justify-center text-3xl mt-4"
                 />
+                <div className="mt-8">
+                  <ConvertkitSignupForm formId="4799506" />
+                </div>
               </div>
             </section>
             <Prose className="mt-8">{children}</Prose>
@@ -93,6 +97,9 @@ export function BlogLayout({
                   slug={meta.slug!}
                   className="mb-8 flex justify-center text-3xl mt-4"
                 />
+                <div className="mt-8">
+                  <ConvertkitSignupForm formId="4799506" />
+                </div>
               </div>
             </section>
           </article>

@@ -15,7 +15,7 @@ export const projects = [
       "A mental health app that detects emotions and suicidal tendencies with AI. It guides users to the right resources and professionals.",
     image: "/images/projects/mind_matters.png",
     stack: [stack.react, stack.tailwindcss, stack.typescript],
-    link: "https://mindmatters.artelus.in/",
+    link: "https://mindmatters.sagarnildas.com/",
   },
 
   {

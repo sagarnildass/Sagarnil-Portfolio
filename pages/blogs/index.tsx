@@ -2,6 +2,7 @@ import { getAllBlogs } from "@/lib/getAllBlogs";
 import { Container } from "@/components/Container";
 import AllBlogsForBlogPage from "@/components/AllBlogsForBlogPage";
 import Link from "next/link";
+import ConvertkitSignupForm from "@/components/ConvertkitSignupForm";
 
 export default function BlogsPage({ blogs }: any) {
   return (
@@ -51,9 +52,13 @@ export default function BlogsPage({ blogs }: any) {
             Recent Blogs
           </h2>
           <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
-            Dive into some of my recent blogs where I share my thoughts on a wide range of topics.
+            Dive into some of my recent blogs where I share my thoughts on a
+            wide range of topics.
           </p>
-          <AllBlogsForBlogPage blogs={blogs} perPageNumber={6}/>
+          <div className="mt-8">
+            <ConvertkitSignupForm formId="4799506" />
+          </div>
+          <AllBlogsForBlogPage blogs={blogs} perPageNumber={6} />
         </div>
       </div>
     </Container>
