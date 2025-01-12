@@ -1,5 +1,13 @@
 export const talks = [
   {
+    title: `Live Performance at Jadapur University`,
+    description: `Witness an electrifying solo live performance by Sagarnil Das at Jadavpur University (JU)! Combining the heartfelt melodies of "Tum Ho Toh" and the high-energy vibes of "Sindbad the Sailor", this electric set featuring Sagarnil on both vocals and guitar had the crowd going absolutely wild! From soulful tunes to rocking beats, this live mashup is sure to stir your emotions and make you relive the energy of that unforgettable night at JU.`,
+    company: `Sagarnil Das`,
+    image: `/images/video_thumbnails/ju.png`,
+    url: `https://www.youtube.com/watch?v=k03onyygQf4`,
+    date: `2025-01-12`,
+  },
+  {
     title: `A Fractal Mind`,
     description: `It tells the story of how time connects the various entities within us through a man's journey in search of his own self. It speculates how we are all connected through time to each other and what we see, what we perceive has already happened in the past and is also going to happen in the future. It touches upon the Atropic Principle with the chains of causality branching out in a fractal manner. `,
     company: `Sagarnil Das`,
