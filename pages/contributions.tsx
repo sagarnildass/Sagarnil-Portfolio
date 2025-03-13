@@ -20,7 +20,7 @@ export default function Contributions({ repos }: { repos: Repository[] }) {
     >
       <div className="max-w-5xl mx-auto px-8 mt-10 md:mt-20 relative">
         <h1 className="font-bold text-3xl md:text-5xl md:leading-tight text-zinc-50 max-w-3xl">
-          Committing Code and Crimes Against{" "}
+          Committing Code and Soul For{" "}
           <span className="text-cyan-500">Open Source World</span>
         </h1>
         <p className="text-zinc-300 text-sm md:text-base max-w-2xl mt-8 md:leading-loose tracking-wide">
