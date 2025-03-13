@@ -7,7 +7,7 @@ export const projects = [
       "A web app that handles a lot of retail operations like Inventory Management with Reinforcement Learning, CLTV Prediction, etc.",
     image: "/images/projects/atlassoft_v2.png",
     stack: [stack.nextjs, stack.tailwindcss, stack.typescript, stack.react],
-    link: "https://preprodapp.atlassoft.com/",
+    link: "https://app.atlassoft.com/",
   },
   {
     title: "Mind Matters",

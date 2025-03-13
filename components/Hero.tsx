@@ -41,7 +41,7 @@ export const Hero = () => {
           className={
             "text-zinc-200 font-bold hover:text-cyan-500 transition duration-150"
           }
-          url="https://preprodapp.atlassoft.com/"
+          url="https://app.atlassoft.com/"
         >
           Atlassoft.
         </LinkPreview>{" "}
