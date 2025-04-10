@@ -2,6 +2,14 @@ import { stack } from "./stack";
 
 export const projects = [
   {
+    title: "PrepWise",
+    description: 
+     "A web app that helps you prepare for your interviews with AI-powered mock interviews and personalized feedback.",
+    image: "/images/projects/prepwise.png",
+    stack: [stack.nextjs, stack.tailwindcss, stack.typescript, stack.react],
+    link: "https://prepwise.sagarnildas.com/",
+  },
+  {
     title: "Atlassoft",
     description:
       "A web app that handles a lot of retail operations like Inventory Management with Reinforcement Learning, CLTV Prediction, etc.",
@@ -29,14 +37,14 @@ export const projects = [
   {
     title: "ShareMe",
     description:
-      "A Pinterest clone that lets you share images and videos with the world. It has a like and comment system. It also has a search feature.",
+      "A Pinterest clone that lets you share images and videos with the world. It has a like and comment system and a search feature.",
     image: "/images/projects/shareme.png",
     stack: [stack.react, stack.tailwindcss, stack.typescript],
     link: "https://shareme-sagarnil.netlify.app/",
   },
   {
     title: "Vastra AI",
-    description: "Ask VastraAI what to wear, get personalized outfit ideas, and shop the perfect look – all in one place, with its semantic search engine. Currently in development.",
+    description: "Ask VastraAI what to wear, get personalized outfit ideas, and shop the perfect look with its semantic search engine.",
     image: "/images/projects/vastra_ai.jpg",
     stack: [stack.nextjs, stack.tailwindcss, stack.typescript],
     link: "https://www.vastraai.com/",
