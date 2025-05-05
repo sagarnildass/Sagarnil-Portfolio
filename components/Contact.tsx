@@ -1,22 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+import { Client } from "@gradio/client";
 
 export const Contact = () => {
   const [open, setOpen] = useState(false);
-  const [success, setSuccess] = useState<string | null>("");
-  const [error, setError] = useState<string | null>("");
-  const [loading, setLoading] = useState<Boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState<{type: 'user' | 'bot', content: string}[]>([]);
+  // Store history in format expected by Gradio ChatInterface
+  const [chatHistory, setChatHistory] = useState<Array<{role: string, content: string}>>([]);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [client, setClient] = useState<any>(null);
 
-  const [formState, setFormState] = useState({
-    email: {
-      value: "",
-      error: "",
-    },
-    message: {
-      value: "",
-      error: "",
-    },
-  });
+  useEffect(() => {
+    // Initialize client when component mounts
+    const initClient = async () => {
+      try {
+        const newClient = await Client.connect("sagarnildass/career_conversation");
+        setClient(newClient);
+      } catch (err) {
+        console.error("Failed to connect to Hugging Face Space:", err);
+      }
+    };
+    
+    if (open && !client) {
+      initClient();
+    }
+    
+    // Auto-focus the input field when chat is opened
+    if (open && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [open, client]);
+
+  useEffect(() => {
+    // Scroll to bottom whenever messages change
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   const dropIn = {
     hidden: {
@@ -38,98 +59,72 @@ export const Contact = () => {
     },
   };
 
-  const onChangeHandler = (field: any, value: any) => {
-    let state = {
-      [field]: {
-        value,
-        error: null,
-      },
-    };
-    setFormState({ ...formState, ...state });
+  // Create a simplified conversation for UI display
+  const getConversationHistory = () => {
+    if (chatHistory.length === 0) return [];
+    
+    // Convert the API history format to the UI format
+    const conversationPairs = [];
+    for (let i = 0; i < chatHistory.length; i += 2) {
+      if (i + 1 < chatHistory.length) {
+        conversationPairs.push([
+          chatHistory[i].content,
+          chatHistory[i + 1].content
+        ]);
+      }
+    }
+    return conversationPairs;
   };
 
-  const handleSubmit = async () => {
-    let { email, message } = formState;
-    let updatedState = { ...formState };
-    let regex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    if (!email.value) {
-      updatedState.email.error = `Oops! Email cannot be empty.`;
-      setFormState({ ...updatedState });
-      return;
-    }
-
-    if (!email.value.toLowerCase().match(regex)) {
-      updatedState.email.error = `Please enter a valid email address`;
-      setFormState({ ...updatedState });
-      return;
-    }
-    if (!message.value) {
-      updatedState.message.error = `Oops! Message cannot be empty.`;
-      setFormState({ ...updatedState });
-      return;
-    }
-
-    // Everything is fine - Proceed with the API call.
+  const handleSendMessage = async () => {
+    if (!input.trim() || loading || !client) return;
+    
+    const userMessage = input.trim();
+    setInput("");
     setLoading(true);
-    setError("");
-    setSuccess("");
-
+    
+    // Add user message to chat UI
+    setMessages(prev => [...prev, {type: 'user', content: userMessage}]);
+    
     try {
-      const response = await fetch("/api/contact", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email.value, message: message.value }),
-      });
-
-      // console.log("Response status:", response.status);
-
-      // Check if response is OK (status in the range 200-299)
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("Response Error Text:", errorText);
-        throw new Error(`Network response was not ok: ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      if (data.success) {
-        setSuccess("Your message has been sent successfully!");
-        setFormState({
-          email: { value: "", error: "" },
-          message: { value: "", error: "" },
-        });
-      } else {
-        setError(
-          data.message || "Something went wrong. Please try again later."
-        );
-      }
+      // Create the history in the correct format: array of (user, assistant) pairs
+      const historyForAPI = getConversationHistory();
+      
+      // Send to API
+      const result = await client.predict("/chat", [userMessage, historyForAPI]);
+      
+      // Get the bot response
+      const botResponse = result.data;
+      
+      // Update UI
+      setMessages(prev => [...prev, {type: 'bot', content: botResponse}]);
+      
+      // Update history with the new exchange
+      setChatHistory(prev => [
+        ...prev,
+        { role: "user", content: userMessage },
+        { role: "assistant", content: botResponse }
+      ]);
     } catch (err) {
-      console.error("An unexpected error occurred:", err);
-      setError("An unexpected error occurred. Please try again later.");
+      console.error("Error sending message:", err);
+      setMessages(prev => [...prev, {type: 'bot', content: "Sorry, I couldn't process your request. Please try again later."}]);
     } finally {
       setLoading(false);
+      // Focus back on input after sending message
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 0);
     }
   };
 
-  const handleButtonClick = () => {
+  const handleToggleChat = () => {
     setOpen(!open);
-    setFormState({
-      email: {
-        value: "",
-        error: "",
-      },
-      message: {
-        value: "",
-        error: "",
-      },
-    });
-    setLoading(false);
-    setError("");
-    setSuccess("");
+    if (!open) {
+      setMessages([]);
+      setChatHistory([]);
+    }
   };
+
   return (
     <AnimatePresence initial={false} onExitComplete={() => null}>
       <div className="fixed right-4 md:right-10 bottom-10 flex flex-col items-end z-[99999]">
@@ -139,70 +134,82 @@ export const Contact = () => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="mb-4 rounded-xl shadow-2xl bg-zinc-800   flex flex-col overflow-hidden mx-4 md:mx-0"
+            className="mb-4 rounded-xl shadow-2xl bg-zinc-800 flex flex-col overflow-hidden mx-4 md:mx-0 w-80 md:w-96"
           >
-            <div className="p-4 bg-zinc-700 ">
-              <h2 className="text-zinc-200 font-bold text-sm md:text-xl ">
-                Have a question? Drop in your message 👇
+            <div className="p-4 bg-zinc-700">
+              <h2 className="text-zinc-200 font-bold text-sm md:text-xl">
+                Chat with my AI Avatar
               </h2>
-              <small className="hidden md:block text-xs text-zinc-400 mb-10 ">
-                It won't take more than 10 seconds. Shoot your shot. 😉
+              <small className="hidden md:block text-xs text-zinc-400">
+                Ask me anything about my career or work!
               </small>
             </div>
-            <div className="content p-6 flex flex-col bg-zinc-800">
-              <label className="text-sm font-normal text-zinc-400 mb-2 ">
-                Email Address
-              </label>
-              <input
-                type="email"
-                value={formState.email.value}
-                onChange={(e) => onChangeHandler("email", e.target.value)}
-                className="text-zinc-400 rounded-md border bg-zinc-800 border-zinc-700 py-1 px-2 focus:outline-none focus:border-gray-400 placeholder:text-sm  mb-1"
-                placeholder="johndoe@xyz.com"
-              />
-
-              <small className="h-4 min-h-4 text-red-500 font-semibold">
-                {formState.email.error && formState.email.error}
-              </small>
-
-              <label className="text-sm font-normal text-zinc-400 mb-2 ">
-                Message
-              </label>
-              <textarea
-                rows={3}
-                value={formState.message.value}
-                onChange={(e) => onChangeHandler("message", e.target.value)}
-                className="text-zinc-400 rounded-md border border-zinc-700 py-1 px-2 bg-zinc-800 focus:outline-none focus:border-gray-400 placeholder:text-sm   mb-1"
-                placeholder="I'd love a compliment from you."
-              />
-              <small className="h-4 min-h-4 text-red-500 font-semibold mb-4">
-                {formState.message.error && formState.message.error}
-              </small>
-              <button
-                onClick={handleSubmit}
-                // disabled={loading}
-                className={`text-zinc-100  w-full px-4 py-2 md:py-4 border-2 border-zinc-800 bg-zinc-700 rounded-md font-normal text-sm  mb-4 transition duration-200 hover:shadow-none ${
-                  loading ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {loading ? "Submitting..." : "Submit"}
-              </button>
-              <small className="h-4 min-h-4 mb-4">
-                {success && (
-                  <p className="text-green-500 font-semibold text-sm">
-                    {success}
-                  </p>
+            
+            <div className="content flex flex-col bg-zinc-800 h-96 md:h-[40rem]">
+              <div className="flex-1 p-4 overflow-y-auto">
+                {messages.length === 0 ? (
+                  <div className="text-zinc-500 text-center mt-4">
+                    Send a message to start the conversation!
+                  </div>
+                ) : (
+                  messages.map((msg, index) => (
+                    <div 
+                      key={index} 
+                      className={`mb-3 ${msg.type === 'user' ? 'text-right' : 'text-left'}`}
+                    >
+                      <div 
+                        className={`inline-block px-3 py-2 rounded-lg ${
+                          msg.type === 'user' 
+                            ? 'bg-cyan-700 text-white' 
+                            : 'bg-zinc-700 text-zinc-200'
+                        }`}
+                      >
+                        {msg.content}
+                      </div>
+                    </div>
+                  ))
                 )}
-                {error && (
-                  <p className="text-red-500 font-semibold text-sm">{error}</p>
-                )}
-              </small>
+                <div ref={messagesEndRef} />
+              </div>
+              
+              <div className="p-3 border-t border-zinc-700 flex">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
+                  placeholder="Type your message..."
+                  disabled={loading || !client}
+                  className="flex-1 text-zinc-400 rounded-md border bg-zinc-800 border-zinc-700 py-2 px-3 focus:outline-none focus:border-zinc-700"
+                />
+                <button
+                  onClick={handleSendMessage}
+                  disabled={loading || !input.trim() || !client}
+                  className={`ml-2 bg-cyan-700 text-white p-2 rounded-md ${
+                    loading || !input.trim() || !client ? 'opacity-50 cursor-not-allowed' : 'hover:bg-cyan-600'
+                  }`}
+                >
+                  {loading ? (
+                    <span className="flex items-center justify-center h-6 w-6">
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                    </span>
+                  ) : (
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
+                    </svg>
+                  )}
+                </button>
+              </div>
             </div>
           </motion.div>
         )}
         <button
-          onClick={handleButtonClick}
-          className="bg-cyan-700  w-14 h-14 rounded-full  flex items-center justify-center hover:scale-105 hover:shadow-xl transition duration-200 shadow-lg"
+          onClick={handleToggleChat}
+          className="bg-cyan-700 w-14 h-14 rounded-full flex items-center justify-center hover:scale-105 hover:shadow-xl transition duration-200 shadow-lg"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

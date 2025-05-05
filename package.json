@@ -55,6 +55,7 @@
     "typescript": "5.0.2"
   },
   "devDependencies": {
+    "@gradio/client": "^1.14.2",
     "@types/mailgun-js": "^0.22.18",
     "@types/react-mathjax": "^1.0.4"
   }

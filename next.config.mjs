@@ -16,6 +16,18 @@ const nextConfig = {
     newNextLinkBehavior: true,
     scrollRestoration: true,
   },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      ...config.resolve.fallback,
+      fs: false,
+      "fs/promises": false,
+      path: false,
+      os: false,
+      net: false,
+      tls: false,
+    };
+    return config;
+  },
 };
 
 const withMDX = nextMDX({
