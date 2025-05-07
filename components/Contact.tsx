@@ -14,7 +14,7 @@ export const Contact = () => {
   const [client, setClient] = useState<any>(null);
 
   useEffect(() => {
-    // Initialize client when component mounts
+    // Initialize client when component mounts, regardless of chat state
     const initClient = async () => {
       try {
         const newClient = await Client.connect("sagarnildass/career_conversation");
@@ -24,7 +24,7 @@ export const Contact = () => {
       }
     };
     
-    if (open && !client) {
+    if (!client) {
       initClient();
     }
     
@@ -158,7 +158,7 @@ export const Contact = () => {
                       className={`mb-3 ${msg.type === 'user' ? 'text-right' : 'text-left'}`}
                     >
                       <div 
-                        className={`inline-block px-3 py-2 rounded-lg ${
+                        className={`inline-block px-3 py-2 rounded-lg text-xs ${
                           msg.type === 'user' 
                             ? 'bg-cyan-700 text-white' 
                             : 'bg-zinc-700 text-zinc-200'
