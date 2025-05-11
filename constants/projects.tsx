@@ -13,9 +13,17 @@ export const projects = [
     title: "Atlassoft",
     description:
       "A web app that handles a lot of retail operations like Inventory Management with Reinforcement Learning, CLTV Prediction, etc.",
-    image: "/images/projects/atlassoft_v2.png",
+    image: "/images/projects/atlassoft_v3.png",
     stack: [stack.nextjs, stack.tailwindcss, stack.typescript, stack.react],
     link: "https://app.atlassoft.com/",
+  },
+  {
+    title: "Welth",
+    description:
+      "A web app that helps you manage your finances with AI-powered insights and personalized recommendations.",
+    image: "/images/projects/welth.png",
+    stack: [stack.nextjs, stack.tailwindcss, stack.typescript, stack.react],
+    link: "https://welth.sagarnildas.com/",
   },
   {
     title: "Mind Matters",
